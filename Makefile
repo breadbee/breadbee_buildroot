@@ -3,7 +3,7 @@ BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
 	BR2_EXTERNAL="../br2autosshkey ../br2breadbee"
 
-all: buildroot
+all: upload
 
 dldir:
 	mkdir -p ./dl
@@ -21,6 +21,7 @@ buildroot: dldir
 
 
 upload: buildroot
+	scp buildroot/output/images/nor-16.img tftp:/srv/tftp/nor-16.img.breadbee
 	scp buildroot/output/images/rootfs.squashfs tftp:/srv/tftp/rootfs.msc313e
 
 clean:
