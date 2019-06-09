@@ -26,3 +26,14 @@ upload: buildroot
 
 clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
+
+clean_uboot:
+	git -C dl/uboot/git pull --force origin msc313
+	rm dl/uboot/uboot-msc313.tar.gz
+	rm -rf buildroot/output/build/uboot-msc313/
+
+clean_kernel:
+	git -C dl/linux/git pull --force origin msc313e
+	rm dl/linux/linux-msc313e.tar.gz
+	rm -rf buildroot/output/build/linux-msc313e/
+
