@@ -28,12 +28,15 @@ clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 
 clean_uboot:
-	git -C dl/uboot/git pull --force origin msc313
-	rm dl/uboot/uboot-msc313.tar.gz
+	git -C dl/uboot/git fetch --all
+	git -C dl/uboot/git reset --hard origin/msc313
+	git -C dl/uboot/git clean -fd
+	rm -f dl/uboot/uboot-msc313.tar.gz
 	rm -rf buildroot/output/build/uboot-msc313/
 
-clean_kernel:
-	git -C dl/linux/git pull --force origin msc313e
-	rm dl/linux/linux-msc313e.tar.gz
+clean_linux:
+	git -C dl/linux/git fetch --all
+	git -C dl/linux/git reset --hard origin/msc313e
+	git -C dl/linux/git clean -fd
+	rm -f dl/linux/linux-msc313e.tar.gz
 	rm -rf buildroot/output/build/linux-msc313e/
-
