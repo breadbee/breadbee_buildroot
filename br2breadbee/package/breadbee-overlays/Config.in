@@ -1,0 +1,4 @@
+config BR2_PACKAGE_BREADBEE_OVERLAYS
+	bool "breadbee_overlays"
+	help
+	  Breadbee overlays

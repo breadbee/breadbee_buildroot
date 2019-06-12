@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_BREADBEE_PATH/package/breadbee-overlays/Config.in"

@@ -1,11 +1,11 @@
 /dts-v1/;
 
 / {
-	description = "dogedoge firmware";
+	description = "Breadbee Firmware";
 	#address-cells = <1>;
 
 	images {
-		kernel@1 {
+		kernel@0 {
 			data = /incbin/("../../images/zImage");
 			type = "kernel";
 			arch = "arm";
@@ -20,8 +20,8 @@
 				algo = "sha1";
 			};
 		};
-		fdt@1 {
-			data = /incbin/("../../images/msc313e-thumbee.dtb");
+		fdt@0 {
+			data = /incbin/("../../images/msc313e-breadbee.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
@@ -33,13 +33,15 @@
 				algo = "sha1";
 			};
 		};
+		/include/ "../../images/breadbee-overlays/fdtlist"
 	};
 
 	configurations {
-		default = "conf@1";
-		conf@1 {
-			kernel = "kernel@1";
-			fdt = "fdt@1";
+		default = "base@0";
+		base@0 {
+			kernel = "kernel@0";
+			fdt = "fdt@0";
 		};
+		/include/ "../../images/breadbee-overlays/configlist"
 	};
 };

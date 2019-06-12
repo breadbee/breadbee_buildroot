@@ -1,0 +1,15 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&mspi0>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+		};
+	};
+};
+
