@@ -9,6 +9,7 @@
 		__overlay__ {
 			status = "okay";
 			pinctrl-names = "default";
+			pinctrl-0 = <&spi0_spi0_pins>;
 		};
 	};
 };
