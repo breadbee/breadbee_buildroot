@@ -6,6 +6,9 @@ sf probe; sf read ${loadaddr} 0x80000 0x300000; bootm ${loadaddr}
 
 sf probe; sf read ${loadaddr} 0x80000 0x300000; bootm ${loadaddr}#base#overlay1#overlay2
 
+Note that the naming convention for the overlays is <function>_<pingroup>. So spi0 on the
+spi0 pin group is spi0_spi0.
+
 #Replacing the kernel and rootfs via tftp:
 
 setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x80000 0xf80000; sf write 0x22080000 0x80000 0xf80000
