@@ -12,13 +12,15 @@ example spidev_on_spi.
 
 # Updating parts of the firmware
 
+run ```make run_tftp``` to get a local tftp server.
+
 ## Replacing the kernel and rootfs via tftp:
 
 ```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x80000 0xf80000; sf write 0x22080000 0x80000 0xf80000; fi```
 
 ## Replacing just the kernel
 
-```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x80000 0x300000; sf write 0x22080000 0x80000 0x300000; fi```
+```setenv serverip 192.168.3.1; if dhcp kernel.fit.img; then; sf probe; sf erase 0x80000 0x300000; sf write 0x22080000 0x0 0x300000; fi```
 
 ## Replacing u-boot
 

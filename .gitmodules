@@ -1,6 +1,8 @@
 [submodule "buildroot"]
 	path = buildroot
-	url = https://github.com/buildroot/buildroot.git
+	url = https://github.com/fifteenhex/buildroot.git
+	branch = msc313
+
 [submodule "br2autosshkey"]
 	path = br2autosshkey
 	url = https://github.com/fifteenhex/br2autosshkey.git

@@ -2,6 +2,8 @@ BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
 	BR2_EXTERNAL="../br2autosshkey ../br2breadbee"
+TFTP_INTERFACE=eno1
+
 
 all: upload
 
@@ -17,7 +19,7 @@ buildroot: dldir
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
 
-.PHONY: upload
+.PHONY: upload run_tftpd
 
 
 upload: buildroot
@@ -40,3 +42,6 @@ clean_linux:
 	git -C dl/linux/git clean -fd
 	rm -f dl/linux/linux-msc313e.tar.gz
 	rm -rf buildroot/output/build/linux-msc313e/
+
+run_tftpd:
+	sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) ./buildroot/output/images/
