@@ -1,3 +1,10 @@
+# Getting access the u-boot prompt
+
+The ch340e usb->uart bridge doesn't like the sudden change in baud rate
+when the board is booting and will inject some junk. To stop that breaking
+auto boot instead of stopping auto boot and going to the u-boot prompt
+on any input u-boot is configured to wait for the string "bzzbzz" instead.
+
 # Loading the kernel without any overlays
 
 ```
