@@ -10,15 +10,17 @@ Note that the naming convention for the overlays is <function>_<pingroup> for pi
 So spi0 on the spi0 pin group is spi0_spi0. For devices on a bus the from is <device>_on_<bus>. For
 example spidev_on_spi.
 
-#Replacing the kernel and rootfs via tftp:
+# Updating parts of the firmware
+
+## Replacing the kernel and rootfs via tftp:
 
 ```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x80000 0xf80000; sf write 0x22080000 0x80000 0xf80000; fi```
 
-#Replacing just the kernel
+## Replacing just the kernel
 
 ```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x80000 0x300000; sf write 0x22080000 0x80000 0x300000```
 
-#Replacing u-boot
+## Replacing u-boot
 
 ```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x20000 0x50000; sf write 0x22020000 0x20000 0x50000```
 
@@ -26,7 +28,7 @@ This will replace the SPL as well as u-boot meaning you won't be able to load u-
 
 ```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x10000 0x60000; sf write 0x22010000 0x10000 0x60000```
 
-#Replacing everything
+## Replacing everything
 
 Don't do this unless you have a way to reflash u-boot if it gets broken!
 
