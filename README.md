@@ -1,6 +1,6 @@
 # Loading the kernel without any overlays
 
-```sf probe; sf read ${loadaddr} 0x80000 0x300000; bootm ${loadaddr}```
+```sf probe; if sf read ${loadaddr} 0x80000 0x300000; then bootm ${loadaddr}; fi```
 
 # Loading the kernel with overlays
 
@@ -18,18 +18,18 @@ example spidev_on_spi.
 
 ## Replacing just the kernel
 
-```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x80000 0x300000; sf write 0x22080000 0x80000 0x300000```
+```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x80000 0x300000; sf write 0x22080000 0x80000 0x300000; fi```
 
 ## Replacing u-boot
 
-```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x20000 0x50000; sf write 0x22020000 0x20000 0x50000```
+```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x20000 0x50000; sf write 0x22020000 0x20000 0x50000; fi```
 
 This will replace the SPL as well as u-boot meaning you won't be able to load u-boot via ymodem if it fails. Use with care
 
-```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x10000 0x60000; sf write 0x22010000 0x10000 0x60000```
+```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x10000 0x60000; sf write 0x22010000 0x10000 0x60000; fi```
 
 ## Replacing everything
 
 Don't do this unless you have a way to reflash u-boot if it gets broken!
 
-```setenv serverip 192.168.3.1; dhcp nor-16.img.breadbee; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000```
+```setenv serverip 192.168.3.1; if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000; fi```
