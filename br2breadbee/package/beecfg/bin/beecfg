@@ -141,7 +141,9 @@ def peripherals():
                       ("fuart", "fuart - J2 pins 15, 16, 17 and 18")]
         pinmuxmenudict = {"i2c1": peripheral_i2c1, "spi0": peripheral_spi0, "sar": peripheral_sar,
                           "fuart": peripheral_fuart}
-        choice = d.menu(text="Which port?", choices=pinmuxmenu)
+        choice = d.menu(
+            text="Select the port to configure.\n\nConfiguration changes are written instantly but only take effect after rebooting.",
+            choices=pinmuxmenu)
         if choice[0] == Dialog.OK:
             pinmuxmenudict.get(choice[1], badoption)()
         else:
