@@ -5,7 +5,7 @@ BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 TFTP_INTERFACE=eno1
 
 
-all: upload
+all: buildroot
 
 dldir:
 	mkdir -p ./dl

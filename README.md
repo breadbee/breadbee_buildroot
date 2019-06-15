@@ -29,7 +29,7 @@ Use ```setenv serverip <ip address>``` to point at your tftp server.
 ## Replacing the kernel and rootfs via tftp:
 
 ```
-if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x80000 0xf80000; sf write 0x22080000 0x80000 0xf80000; fi
+if dhcp nor-16.img; then; sf probe; sf erase 0x80000 0xf80000; sf write 0x22080000 0x80000 0xf80000; fi
 ```
 
 ## Replacing just the kernel
@@ -41,13 +41,13 @@ if dhcp kernel.fit.img; then;sf probe;sf erase 0x80000 0x300000;sf write 0x22000
 ## Replacing u-boot
 
 ```
-if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x20000 0x50000; sf write 0x22020000 0x20000 0x50000; fi
+if dhcp nor-16.img; then; sf probe; sf erase 0x20000 0x50000; sf write 0x22020000 0x20000 0x50000; fi
 ```
 
 This will replace the SPL as well as u-boot meaning you won't be able to load u-boot via ymodem if it fails. Use with care
 
 ```
-if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x10000 0x60000; sf write 0x22010000 0x10000 0x60000; fi
+if dhcp nor-16.img; then; sf probe; sf erase 0x10000 0x60000; sf write 0x22010000 0x10000 0x60000; fi
 ```
 
 ## Replacing everything
@@ -55,5 +55,5 @@ if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x10000 0x60000; sf write 
 Don't do this unless you have a way to reflash u-boot if it gets broken!
 
 ```
-if dhcp nor-16.img.breadbee; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000; fi
+if dhcp nor-16.img; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000; fi
 ```

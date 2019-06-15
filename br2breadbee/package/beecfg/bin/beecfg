@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+
+import locale
+from dialog import Dialog
+
+locale.setlocale(locale.LC_ALL, '')
+
+d = Dialog(dialog="dialog", autowidgetsize=True)
+
+d.setBackgroundTitle("BeeCfg for BreadBee")
+
+pinmux_options = {"i2c1_gpio": True, "spi0_gpio": True, "fuart_gpio": True}
+
+
+def pinmux_i2c1():
+    menu = [("i2c1", "enable i2c on pins 5 and 6", pinmux_options.get("i2c1_i2c1", False)),
+            ("gpio", "enable gpio on pins 5 and 6", pinmux_options.get("i2c1_gpio", False))]
+    choice = d.radiolist(text="i2c1 options", choices=menu)
+    if choice[0] == Dialog.OK:
+        for mi in menu:
+            pinmux_options["i2c1_" + mi[0]] = False
+        pinmux_options["i2c1_" + choice[1]] = True
+
+
+def pinmux_spi0():
+    menu = [("spi0", "enable spi on pins 7, 8, 9 and 10", pinmux_options.get("spi0_spi0", False)),
+            ("jtag", "enable jtag on pins 7, 8, 9 and 10", pinmux_options.get("spi0_jtag", False)),
+            ("gpio", "enable gpio on pins 7, 8, 9 and 10", pinmux_options.get("spi0_gpio", False))]
+    choice = d.radiolist(text="spi0 options", choices=menu)
+    if choice[0] == Dialog.OK:
+        for mi in menu:
+            pinmux_options["spi0_" + mi[0]] = False
+        pinmux_options["spi0_" + choice[1]] = True
+
+
+def pinmux_sar():
+    menu = [("sar0", "enable ADC on pin 14", pinmux_options.get("sar0", False)),
+            ("sar1", "enable ADC on pin 13", pinmux_options.get("sar1", False)),
+            ("sar2", "enable ADC on pin 11", pinmux_options.get("sar2", False)),
+            ("sar3", "enable ADC on pin 12", pinmux_options.get("sar3", False))]
+    choice = d.checklist(text="sar options", choices=menu)
+    if choice[0] == Dialog.OK:
+        for mi in menu:
+            pinmux_options[mi[0]] = False
+        for tag in choice[1]:
+            pinmux_options[tag] = True
+
+
+def pinmux_fuart():
+    menu = [("spi0", "enable spi on pins 15, 16, 17 and 18", pinmux_options.get("fuart_spi0", False)),
+            ("gpio", "enable gpio on pins 15, 16, 17 and 18", pinmux_options.get("fuart_gpio", False))]
+    choice = d.radiolist(text="fuart options", choices=menu)
+    if choice[0] == Dialog.OK:
+        for mi in menu:
+            pinmux_options["fuart_" + mi[0]] = False
+        pinmux_options["fuart_" + choice[1]] = True
+
+
+def pinmux():
+    while True:
+        pinmuxmenu = [("i2c1", "i2c1 - J2 pins 5 and 6"),
+                      ("spi0", "spi0 - J2 pins 7, 8, 9 and 10"),
+                      ("sar", "sar - J2 pins 11, 12, 13 and 14"),
+                      ("fuart", "fuart - J2 pins 15, 16, 17 and 18")]
+        pinmuxmenudict = {"i2c1": pinmux_i2c1, "spi0": pinmux_spi0, "sar": pinmux_sar, "fuart": pinmux_fuart}
+        choice = d.menu(text="Which port?", choices=pinmuxmenu)
+        if choice[0] == Dialog.OK:
+            pinmuxmenudict.get(choice[1], badoption)()
+        else:
+            break
+
+
+def badoption():
+    d.msgbox("Something terrible has happened")
+
+
+mainmenu = [("pinmux", "Select pin muxing options")]
+
+menudict = {"pinmux": pinmux}
+
+while True:
+    try:
+        choice = d.menu(text="Pick your poison", choices=mainmenu)
+        if choice[0] == Dialog.OK:
+            menudict.get(choice[1], badoption)()
+        else:
+            break
+    except Exception as e:
+        d.msgbox("Exception thrown: " + str(e))
+        break
