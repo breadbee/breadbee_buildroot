@@ -94,8 +94,8 @@ def peripheral_i2c1():
 
 
 def peripheral_spi0():
-    menu = [("jtag", "enable jtag on pins 7, 8, 9 and 10", "jtag_spi0" in peripheral_options),
-            ("gpio", "enable gpio on pins 7, 8, 9 and 10", "gpio_spi0" in peripheral_options)]
+    # ("jtag", "enable jtag on pins 7, 8, 9 and 10", "jtag_spi0" in peripheral_options)
+    menu = [("gpio", "enable gpio on pins 7, 8, 9 and 10", "gpio_spi0" in peripheral_options)]
 
     if not "spi0_fuart" in peripheral_options:
         menu.append(("spi0", "enable spi on pins 7, 8, 9 and 10", "spi0_spi0" in peripheral_options))
