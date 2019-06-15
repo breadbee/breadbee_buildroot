@@ -48,7 +48,7 @@ def update_config():
     if len(sar_options) > 0:
         overlays.append("sar_" + "-".join(sar_options))
 
-    newconfig = "#".join(overlays)
+    newconfig = "#base#" + "#".join(overlays)
     subprocess.check_call(["fw_setenv", "bb_config", newconfig])
 
 
