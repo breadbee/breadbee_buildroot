@@ -2,6 +2,7 @@
 
 import locale
 from dialog import Dialog
+import subprocess
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -9,60 +10,106 @@ d = Dialog(dialog="dialog", autowidgetsize=True)
 
 d.setBackgroundTitle("BeeCfg for BreadBee")
 
-pinmux_options = {"i2c1_gpio": True, "spi0_gpio": True, "fuart_gpio": True}
+peripheral_options = []
+gpio_option_keys = ["gpio_i2c1", "gpio_spi0", "gpio_fuart"]
+sar_option_map = {"sar0_sar": "sar_gpio0", "sar1_sar": "sar_gpio1", "sar2_sar": "sar_gpio2", "sar3_sar": "sar_gpio3"}
 
 
-def pinmux_i2c1():
-    menu = [("i2c1", "enable i2c on pins 5 and 6", pinmux_options.get("i2c1_i2c1", False)),
-            ("gpio", "enable gpio on pins 5 and 6", pinmux_options.get("i2c1_gpio", False))]
+def setupdefaults():
+    add_peripheral("gpio", "i2c1")
+    add_peripheral("gpio", "spi0")
+    add_peripheral("gpio", "fuart")
+
+
+def add_peripheral(peripheral, port):
+    peripheral_options.append(peripheral + "_" + port)
+
+
+def remove_peripherals(port, menu):
+    for mi in menu:
+        option = mi[0] + "_" + port
+        if option in peripheral_options:
+            peripheral_options.remove(option)
+
+
+def update_config():
+    overlays = []
+    sar_options = []
+    for option in peripheral_options:
+        # just strip gpio options
+        if option in gpio_option_keys:
+            continue
+        # collect sar options for later
+        elif option in sar_option_map:
+            sar_options.append(sar_option_map.get(option))
+        else:
+            overlays.append(option)
+
+    if len(sar_options) > 0:
+        overlays.append("sar_" + "-".join(sar_options))
+
+    newconfig = "#".join(overlays)
+    subprocess.check_call(["fw_setenv", "bb_config", newconfig])
+
+
+def peripheral_i2c1():
+    menu = [("i2c1", "enable i2c on pins 5 and 6", "i2c1_i2c1" in peripheral_options),
+            ("gpio", "enable gpio on pins 5 and 6", "gpio_i2c1" in peripheral_options)]
     choice = d.radiolist(text="i2c1 options", choices=menu)
     if choice[0] == Dialog.OK:
-        for mi in menu:
-            pinmux_options["i2c1_" + mi[0]] = False
-        pinmux_options["i2c1_" + choice[1]] = True
+        remove_peripherals("i2c1", menu)
+        add_peripheral(choice[1], "i2c1")
+        update_config()
 
 
-def pinmux_spi0():
-    menu = [("spi0", "enable spi on pins 7, 8, 9 and 10", pinmux_options.get("spi0_spi0", False)),
-            ("jtag", "enable jtag on pins 7, 8, 9 and 10", pinmux_options.get("spi0_jtag", False)),
-            ("gpio", "enable gpio on pins 7, 8, 9 and 10", pinmux_options.get("spi0_gpio", False))]
+def peripheral_spi0():
+    menu = [("jtag", "enable jtag on pins 7, 8, 9 and 10", "jtag_spi0" in peripheral_options),
+            ("gpio", "enable gpio on pins 7, 8, 9 and 10", "gpio_spi0" in peripheral_options)]
+
+    if not "spi0_fuart" in peripheral_options:
+        menu.append(("spi0", "enable spi on pins 7, 8, 9 and 10", "spi0_spi0" in peripheral_options))
+
     choice = d.radiolist(text="spi0 options", choices=menu)
     if choice[0] == Dialog.OK:
-        for mi in menu:
-            pinmux_options["spi0_" + mi[0]] = False
-        pinmux_options["spi0_" + choice[1]] = True
+        remove_peripherals("spi0", menu)
+        add_peripheral(choice[1], "spi0")
+        update_config()
 
 
-def pinmux_sar():
-    menu = [("sar0", "enable ADC on pin 14", pinmux_options.get("sar0", False)),
-            ("sar1", "enable ADC on pin 13", pinmux_options.get("sar1", False)),
-            ("sar2", "enable ADC on pin 11", pinmux_options.get("sar2", False)),
-            ("sar3", "enable ADC on pin 12", pinmux_options.get("sar3", False))]
+def peripheral_sar():
+    menu = [("sar0", "enable ADC on pin 14", "sar0_sar" in peripheral_options),
+            ("sar1", "enable ADC on pin 13", "sar1_sar" in peripheral_options),
+            ("sar2", "enable ADC on pin 11", "sar2_sar" in peripheral_options),
+            ("sar3", "enable ADC on pin 12", "sar3_sar" in peripheral_options)]
     choice = d.checklist(text="sar options", choices=menu)
     if choice[0] == Dialog.OK:
-        for mi in menu:
-            pinmux_options[mi[0]] = False
+        remove_peripherals("sar", menu)
         for tag in choice[1]:
-            pinmux_options[tag] = True
+            add_peripheral(tag, "sar")
+        update_config()
 
 
-def pinmux_fuart():
-    menu = [("spi0", "enable spi on pins 15, 16, 17 and 18", pinmux_options.get("fuart_spi0", False)),
-            ("gpio", "enable gpio on pins 15, 16, 17 and 18", pinmux_options.get("fuart_gpio", False))]
+def peripheral_fuart():
+    menu = [("gpio", "enable gpio on pins 15, 16, 17 and 18", "gpio_fuart" in peripheral_options)]
+
+    if not "spi0_spi0" in peripheral_options:
+        menu.append(("spi0", "enable spi on pins 15, 16, 17 and 18", "spi0_fuart" in peripheral_options))
+
     choice = d.radiolist(text="fuart options", choices=menu)
     if choice[0] == Dialog.OK:
-        for mi in menu:
-            pinmux_options["fuart_" + mi[0]] = False
-        pinmux_options["fuart_" + choice[1]] = True
+        remove_peripherals("fuart", menu)
+        add_peripheral(choice[1], "fuart")
+        update_config()
 
 
-def pinmux():
+def peripherals():
     while True:
         pinmuxmenu = [("i2c1", "i2c1 - J2 pins 5 and 6"),
                       ("spi0", "spi0 - J2 pins 7, 8, 9 and 10"),
                       ("sar", "sar - J2 pins 11, 12, 13 and 14"),
                       ("fuart", "fuart - J2 pins 15, 16, 17 and 18")]
-        pinmuxmenudict = {"i2c1": pinmux_i2c1, "spi0": pinmux_spi0, "sar": pinmux_sar, "fuart": pinmux_fuart}
+        pinmuxmenudict = {"i2c1": peripheral_i2c1, "spi0": peripheral_spi0, "sar": peripheral_sar,
+                          "fuart": peripheral_fuart}
         choice = d.menu(text="Which port?", choices=pinmuxmenu)
         if choice[0] == Dialog.OK:
             pinmuxmenudict.get(choice[1], badoption)()
@@ -74,17 +121,19 @@ def badoption():
     d.msgbox("Something terrible has happened")
 
 
-mainmenu = [("pinmux", "Select pin muxing options")]
+if __name__ == '__main__':
+    setupdefaults()
+    mainmenu = [("peripherals", "Select peripheral options")]
 
-menudict = {"pinmux": pinmux}
+    menudict = {"peripherals": peripherals}
 
-while True:
-    try:
-        choice = d.menu(text="Pick your poison", choices=mainmenu)
-        if choice[0] == Dialog.OK:
-            menudict.get(choice[1], badoption)()
-        else:
+    while True:
+        try:
+            choice = d.menu(text="Pick your poison", choices=mainmenu)
+            if choice[0] == Dialog.OK:
+                menudict.get(choice[1], badoption)()
+            else:
+                break
+        except Exception as e:
+            d.msgbox("Exception thrown: " + str(e))
             break
-    except Exception as e:
-        d.msgbox("Exception thrown: " + str(e))
-        break
