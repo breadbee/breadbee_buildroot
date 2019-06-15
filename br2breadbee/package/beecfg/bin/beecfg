@@ -14,11 +14,42 @@ peripheral_options = []
 gpio_option_keys = ["gpio_i2c1", "gpio_spi0", "gpio_fuart"]
 sar_option_map = {"sar0_sar": "sar_gpio0", "sar1_sar": "sar_gpio1", "sar2_sar": "sar_gpio2", "sar3_sar": "sar_gpio3"}
 
+port_configs = {
+    "i2c1": ["gpio", "i2c1"],
+    "spi0": ["gpio", "spi0"],
+    "fuart": ["gpio", "spi0"]
+}
 
-def setupdefaults():
-    add_peripheral("gpio", "i2c1")
-    add_peripheral("gpio", "spi0")
-    add_peripheral("gpio", "fuart")
+
+def reload_config():
+    # this is to make sure we only have one option per port
+    dedupmap = {"i2c1": "gpio_i2c1", "spi0": "gpio_spi0", "fuart": "gpio_fuart"}
+
+    config = subprocess.check_output(["fw_printenv", "bb_config"]).decode('utf-8').strip('\n')
+    bits = config.split("=")[1][1:].split("#")
+
+    for bit in bits:
+        # ignore the base part
+        if bit == "base":
+            continue
+        # special casing for splitting up the sar overlay name
+        if bit.startswith("sar_"):
+            saropts = bit[4:].split("-")
+            for saropt in saropts:
+                for k in sar_option_map:
+                    if sar_option_map.get(k) == saropt:
+                        peripheral_options.append(k)
+                        break
+        else:
+            # check the function is valid for the port and
+            # add it to the dedup map if so
+            port = bit.split('_')[1]
+            function = bit.split('_')[0]
+            if function in port_configs.get(port):
+                dedupmap[port] = bit
+
+    for k in dedupmap:
+        peripheral_options.append(dedupmap.get(k))
 
 
 def add_peripheral(peripheral, port):
@@ -122,7 +153,7 @@ def badoption():
 
 
 if __name__ == '__main__':
-    setupdefaults()
+    reload_config()
     mainmenu = [("peripherals", "Select peripheral options")]
 
     menudict = {"peripherals": peripherals}
