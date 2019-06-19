@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			onewire@sr_io7 {
+				compatible = "w1-gpio";
+				gpios = <&gpio 11 0>;
+			};
+		};
+	};
+};
+
