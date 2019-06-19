@@ -5,6 +5,12 @@ when the board is booting and will inject some junk. To stop that breaking
 auto boot instead of stopping auto boot and going to the u-boot prompt
 on any input u-boot is configured to wait for the string "bzzbzz" instead.
 
+# Overlay naming convention
+
+- overlays : function_pingroup
+- interfaces : interface_on_function/pin
+- accessories: accessory_on_function/pin
+
 # Loading the kernel without any overlays
 
 ```
@@ -16,10 +22,6 @@ sf probe; if sf read ${loadaddr} 0x80000 0x300000; then bootm ${loadaddr}; fi
 ```
 sf probe; if sf read ${loadaddr} 0x80000 0x300000; then bootm ${loadaddr}#base#overlay1#overlay2; fi
 ```
-
-Note that the naming convention for the overlays is <function>_<pingroup> for pin mux configuration.
-So spi0 on the spi0 pin group is spi0_spi0. For devices on a bus the from is <device>_on_<bus>. For
-example spidev_on_spi.
 
 # Updating parts of the firmware
 
