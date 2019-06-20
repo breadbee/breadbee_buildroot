@@ -30,6 +30,10 @@ pinmux_config = {}
 INTERFACE_SPIDEV = "spidev"
 INTERFACE_W1 = "w1"
 
+ACCESSORY_TSL2563 = "tsl2563"
+ACCESSORY_MPU6050 = "mpu6050"
+ACCESSORY_SSD1306 = "ssd1306"
+
 interface_possibilities = {
     INTERFACE_SPIDEV: ([
                            "spi0"
@@ -39,7 +43,18 @@ interface_possibilities = {
                    ], False)
 }
 
+i2c1_accessory = ([
+                      "i2c1"
+                  ], True)
+
+accessory_possibilities = {
+    ACCESSORY_TSL2563: i2c1_accessory,
+    ACCESSORY_MPU6050: i2c1_accessory,
+    ACCESSORY_SSD1306: i2c1_accessory
+}
+
 interface_config = []
+accessory_config = []
 
 pins_i2c1 = set([5, 6])
 muxoptions_i2c1 = {
@@ -115,7 +130,7 @@ def remove_functions_from_port(port):
 
 def update_config():
     sar_options = []
-    overlays = set()
+    overlays = []
 
     for peripheral in pinmux_config:
         port = pinmux_config.get(peripheral)
@@ -123,15 +138,18 @@ def update_config():
             sar_options.append(peripheral.replace("asi", "sar_gpio"))
         else:
             if peripheral in overlay_exceptions and port in overlay_exceptions.get(peripheral):
-                overlays.add(overlay_exceptions.get(peripheral).get(port))
+                overlays.append(overlay_exceptions.get(peripheral).get(port))
             else:
-                overlays.add("%s_%s" % (peripheral, port))
+                overlays.append("%s_%s" % (peripheral, port))
 
     if len(sar_options) > 0:
         overlays.append("%s_%s" % (PORT_SAR, "-".join(sar_options)))
 
     for interface in interface_config:
-        overlays.add(interface)
+        overlays.append(interface)
+
+    for accessory in accessory_config:
+        overlays.append(accessory)
 
     newconfig = ""
 
@@ -217,18 +235,23 @@ def menu_pinmux():
             break
 
 
-def menu_interfaces():
-    global interface_config
-    interface_menu = []
-    for interface in interface_possibilities:
-        requires_pinmux = interface_possibilities.get(interface)[1]
+def build_interface_accessory_menu(possibilities, config):
+    menu = []
+    for thing in possibilities:
+        requires_pinmux = possibilities.get(thing)[1]
 
-        for plug in interface_possibilities.get(interface)[0]:
+        for plug in possibilities.get(thing)[0]:
             # skip any choices that require unselected pinmux functions
             if requires_pinmux and plug not in pinmux_config:
                 continue
-            dtb_name = "%s_on_%s" % (interface, plug)
-            interface_menu.append((dtb_name, "%s on %s" % (interface, plug), dtb_name in interface_config))
+            dtb_name = "%s_on_%s" % (thing, plug)
+            menu.append((dtb_name, "%s on %s" % (thing, plug), dtb_name in config))
+    return menu
+
+
+def menu_interfaces():
+    global interface_config
+    interface_menu = build_interface_accessory_menu(interface_possibilities, interface_config)
 
     while True:
         choice = d.checklist(
@@ -243,7 +266,18 @@ def menu_interfaces():
 
 
 def menu_accessories():
-    pass
+    global accessory_config
+    accessory_menu = build_interface_accessory_menu(accessory_possibilities, accessory_config)
+    while True:
+        choice = d.checklist(
+            text="Select the accessories you want to enable.\n\n" +
+                 TXT_CHANGESAFTERREBOOT,
+            choices=accessory_menu)
+        if choice[0] == Dialog.OK:
+            accessory_config = choice[1]
+            update_config()
+
+        break
 
 
 menus = {
