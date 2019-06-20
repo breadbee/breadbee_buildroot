@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			mpu605@68 {
+				compatible = "invn,mpu6050";
+				reg = <0x68>;
+			};
+		};
+	};
+};
+

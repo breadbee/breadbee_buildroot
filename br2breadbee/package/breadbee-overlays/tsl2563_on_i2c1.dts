@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			tsl2563@39 {
+				compatible = "amstaos,tsl2563";
+				reg = <0x39>;
+			};
+		};
+	};
+};
+

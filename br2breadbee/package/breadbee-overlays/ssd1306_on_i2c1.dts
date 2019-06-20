@@ -1,0 +1,20 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			ssd1306: ssd1306@3c {
+				compatible = "solomon,ssd1306fb-i2c";
+				reg = <0x3c>;
+				solomon,com-lrremap;
+				solomon,com-invdir;
+				solomon,com-offset = <32>;
+			};
+		};
+	};
+};
+
