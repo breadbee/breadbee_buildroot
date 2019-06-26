@@ -33,14 +33,31 @@
 				algo = "sha1";
 			};
 		};
+		fdt@1 {
+			data = /incbin/("../../images/msc313-breadbee_crust.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			load = <0x23000000>;
+			hash@1 {
+				algo = "crc32";
+			};
+			hash@2 {
+				algo = "sha1";
+			};
+		};
 		/include/ "../../images/breadbee-overlays/fdtlist"
 	};
 
 	configurations {
-		default = "base@0";
-		base@0 {
+		default = "breadbee";
+		breadbee {
 			kernel = "kernel@0";
 			fdt = "fdt@0";
+		};
+		breadbee_crust {
+			kernel = "kernel@0";
+			fdt = "fdt@1";
 		};
 		/include/ "../../images/breadbee-overlays/configlist"
 	};

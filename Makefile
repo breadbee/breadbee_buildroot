@@ -19,7 +19,7 @@ buildroot: dldir
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
 
-.PHONY: upload run_tftpd
+.PHONY: upload run_tftpd update_linux update_uboot
 
 
 upload: buildroot
@@ -29,14 +29,14 @@ upload: buildroot
 clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 
-clean_uboot:
+update_uboot:
 	git -C dl/uboot/git fetch --all
 	git -C dl/uboot/git reset --hard origin/msc313
 	git -C dl/uboot/git clean -fd
 	rm -f dl/uboot/uboot-msc313.tar.gz
 	rm -rf buildroot/output/build/uboot-msc313/
 
-clean_linux:
+update_linux:
 	git -C dl/linux/git fetch --all
 	git -C dl/linux/git reset --hard origin/msc313e
 	git -C dl/linux/git clean -fd
