@@ -6,3 +6,6 @@
 [submodule "br2autosshkey"]
 	path = br2autosshkey
 	url = https://github.com/fifteenhex/br2autosshkey.git
+[submodule "br2sanetime"]
+	path = br2sanetime
+	url = https://github.com/fifteenhex/br2sanetime.git

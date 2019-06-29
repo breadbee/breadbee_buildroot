@@ -1,25 +1,27 @@
 BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
-	BR2_EXTERNAL="../br2autosshkey ../br2breadbee"
+	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
 TFTP_INTERFACE=eno1
 
+.PHONY: upload run_tftpd update_linux update_uboot
 
 all: buildroot
 
 dldir:
 	mkdir -p ./dl
 
+clean_localpkgs:
+	rm -rf buildroot/output/build/breadbee-overlays-*/
+
 buildroot_config:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) menuconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) savedefconfig
 
-buildroot: dldir
+buildroot: dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
-
-.PHONY: upload run_tftpd update_linux update_uboot
 
 
 upload: buildroot
