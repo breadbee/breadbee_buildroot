@@ -1,0 +1,15 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&ssd1306>;
+		__overlay__ {
+			solomon,width = <128>;
+			solomon,height = <32>;
+		};
+	};
+};
+

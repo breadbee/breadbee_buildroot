@@ -33,6 +33,7 @@ INTERFACE_W1 = "w1"
 ACCESSORY_TSL2563 = "tsl2563"
 ACCESSORY_MPU6050 = "mpu6050"
 ACCESSORY_SSD1306 = "ssd1306"
+ACCESSORY_DS1307 = "ds1307"
 
 interface_possibilities = {
     INTERFACE_SPIDEV: ([
@@ -50,7 +51,8 @@ i2c1_accessory = ([
 accessory_possibilities = {
     ACCESSORY_TSL2563: i2c1_accessory,
     ACCESSORY_MPU6050: i2c1_accessory,
-    ACCESSORY_SSD1306: i2c1_accessory
+    ACCESSORY_SSD1306: i2c1_accessory,
+    ACCESSORY_DS1307: i2c1_accessory
 }
 
 interface_config = []

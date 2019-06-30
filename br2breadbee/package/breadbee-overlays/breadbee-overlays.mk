@@ -12,7 +12,7 @@ BREADBEE_OVERLAYS_INSTALL_IMAGES = YES
 
 define BREADBEE_OVERLAYS_INSTALL_DTB_OVERLAYS
         for ovl in  $(@D)/*.dts; do \
-		dtc -a 4 -I dts -O dtb -o $(@D)/$$(basename "$$ovl" .dts).dtb $${ovl}; \
+		dtc -@ -a 4 -I dts -O dtb -o $(@D)/$$(basename "$$ovl" .dts).dtb $${ovl}; \
         done
 	rm -f $(BINARIES_DIR)/breadbee-overlays/fdtlist
 	rm -f $(BINARIES_DIR)/breadbee-overlays/configlist
