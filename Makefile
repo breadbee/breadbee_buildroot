@@ -13,6 +13,7 @@ dldir:
 
 clean_localpkgs:
 	rm -rf buildroot/output/build/breadbee-overlays-*/
+	rm -rf buildroot/output/build/beecfg-*/
 
 buildroot_config:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
