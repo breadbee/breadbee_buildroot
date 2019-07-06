@@ -14,16 +14,31 @@ MENU_PINMUX = "pinmux"
 MENU_INTERFACES = "interfaces"
 MENU_ACCESSORIES = "accessories"
 
-FUNCTION_I2C1 = "i2c1"
-FUNCTION_SPI0 = "spi0"
-FUNCTION_PWM0 = "pwm0"
-FUNCTION_PWM1 = "pwm1"
-FUNCTION_PWM2 = "pwm2"
-FUNCTION_PWM3 = "pwm3"
+CONNECTOR_J1 = "J1"
+CONNECTOR_J2 = "J2"
+
 PORT_I2C1 = "i2c1"
 PORT_SPI0 = "spi0"
 PORT_SAR = "sar"
 PORT_FUART = "fuart"
+PORT_SD = "sd"
+
+port_connector_map = {
+    PORT_I2C1: CONNECTOR_J2,
+    PORT_SPI0: CONNECTOR_J2,
+    PORT_SAR: CONNECTOR_J2,
+    PORT_FUART: CONNECTOR_J2,
+    PORT_SD: CONNECTOR_J1
+}
+
+FUNCTION_I2C1 = "i2c1"
+FUNCTION_SPI0 = "spi0"
+FUNCTION_SPI1 = "spi1"
+FUNCTION_PWM0 = "pwm0"
+FUNCTION_PWM1 = "pwm1"
+FUNCTION_PWM2 = "pwm2"
+FUNCTION_PWM3 = "pwm3"
+FUNCTION_FUART = "fuart"
 
 pinmux_config = {}
 
@@ -34,10 +49,13 @@ ACCESSORY_TSL2563 = "tsl2563"
 ACCESSORY_MPU6050 = "mpu6050"
 ACCESSORY_SSD1306 = "ssd1306"
 ACCESSORY_DS1307 = "ds1307"
+ACCESSORY_IR_RX = "ir_rx"
+ACCESSORY_IR_TX = "ir_tx"
 
 interface_possibilities = {
     INTERFACE_SPIDEV: ([
-                           "spi0"
+                           "spi0",
+                           "spi1"
                        ], True),
     INTERFACE_W1: ([
                        "sr_io7"
@@ -52,7 +70,9 @@ accessory_possibilities = {
     ACCESSORY_TSL2563: i2c1_accessory,
     ACCESSORY_MPU6050: i2c1_accessory,
     ACCESSORY_SSD1306: i2c1_accessory,
-    ACCESSORY_DS1307: i2c1_accessory
+    ACCESSORY_DS1307: i2c1_accessory,
+    ACCESSORY_IR_RX: (["pm_gpio4"], False),
+    ACCESSORY_IR_TX: (["sr_io3"], False)
 }
 
 interface_config = []
@@ -79,18 +99,24 @@ muxoptions_sar = {
 pins_fuart = set([15, 16, 17, 18])
 muxoptions_fuart = {
     FUNCTION_SPI0: pins_fuart,
-    "fuart": pins_fuart,
+    FUNCTION_FUART: pins_fuart,
     FUNCTION_PWM0: set([15]),
     FUNCTION_PWM1: set([16]),
     FUNCTION_PWM2: set([17]),
     FUNCTION_PWM3: set([18])
 }
 
+pins_sd = set([2, 3, 4, 5, 6, 7])
+muxoptions_sd = {
+    FUNCTION_SPI1: set([2, 3, 4, 5])
+}
+
 muxoptions_map = {
     PORT_I2C1: muxoptions_i2c1,
     PORT_SPI0: muxoptions_spi0,
     PORT_SAR: muxoptions_sar,
-    PORT_FUART: muxoptions_fuart
+    PORT_FUART: muxoptions_fuart,
+    PORT_SD: muxoptions_sd
 }
 
 overlay_exceptions = {
@@ -105,6 +131,9 @@ overlay_exceptions = {
     },
     FUNCTION_PWM3: {
         PORT_FUART: "pwm3_fuart_rts"
+    },
+    FUNCTION_SPI1: {
+        PORT_SD: "spi1_sd_d0_d1_d2_d3"
     }
 }
 
@@ -168,7 +197,8 @@ def update_config():
 
 def add_muxoption_to_menu(menu, port, option, pins):
     menu.append(
-        (option, "enable %s on %s %s" % (option, "pins" if len(pins) > 1 else "pin", ", ".join(str(p) for p in pins)),
+        (option, "enable %s on %s %s of connector %s" % (
+            option, "pins" if len(pins) > 1 else "pin", ", ".join(str(p) for p in pins), port_connector_map.get(port)),
          function_on_port(option, port)))
 
 
@@ -194,8 +224,8 @@ def port_menu(port):
                     d.yesno(text="Overlapping options are selected")
                     setpins = False
                     break
-                elif tag in pinmux_config:
-                    d.yesno(text="%s is selected elsewhere" % tag)
+                elif (tag in pinmux_config) and (pinmux_config[tag] != port):
+                    d.yesno(text="%s is already enabled on '%s' '%s'" % (tag, pinmux_config.get(tag), port))
                     setpins = False
                 for p in option_pins:
                     usedpins.add(p)
@@ -225,7 +255,7 @@ def menu_pinmux():
         for opt in muxoptions:
             for p in muxoptions.get(opt):
                 port_pins.add(p)
-        pinmuxmenu.append((port, "J2 pins %s" % (", ".join(str(p) for p in port_pins))))
+        pinmuxmenu.append((port, "%s pins %s" % (port_connector_map.get(port), ", ".join(str(p) for p in port_pins))))
     while True:
         choice = d.menu(
             text="Select the port to configure.\n\n" +
