@@ -38,6 +38,10 @@ FUNCTION_PWM0 = "pwm0"
 FUNCTION_PWM1 = "pwm1"
 FUNCTION_PWM2 = "pwm2"
 FUNCTION_PWM3 = "pwm3"
+FUNCTION_PWM4 = "pwm4"
+FUNCTION_PWM5 = "pwm5"
+FUNCTION_PWM6 = "pwm6"
+FUNCTION_PWM7 = "pwm7"
 FUNCTION_FUART = "fuart"
 
 pinmux_config = {}
@@ -85,7 +89,11 @@ muxoptions_i2c1 = {
 
 pins_spi0 = set([7, 8, 9, 10])
 muxoptions_spi0 = {
-    FUNCTION_SPI0: pins_spi0
+    FUNCTION_SPI0: pins_spi0,
+    FUNCTION_PWM4: set([7]),
+    FUNCTION_PWM5: set([8]),
+    FUNCTION_PWM6: set([9]),
+    FUNCTION_PWM7: set([10])
 }
 
 pins_sar = set([11, 12, 13, 14])
@@ -119,6 +127,8 @@ muxoptions_map = {
     PORT_SD: muxoptions_sd
 }
 
+# this is for mapping the less uniform dts overlay
+# names to the simpler functions we care about
 overlay_exceptions = {
     FUNCTION_PWM0: {
         PORT_FUART: "pwm0_fuart_rx"
@@ -131,6 +141,18 @@ overlay_exceptions = {
     },
     FUNCTION_PWM3: {
         PORT_FUART: "pwm3_fuart_rts"
+    },
+    FUNCTION_PWM4: {
+        PORT_SPI0: "pwm4_spi0_cz"
+    },
+    FUNCTION_PWM5: {
+        PORT_SPI0: "pwm5_spi0_ck"
+    },
+    FUNCTION_PWM6: {
+        PORT_SPI0: "pwm5_spi0_di"
+    },
+    FUNCTION_PWM7: {
+        PORT_SPI0: "pwm3_spi0_do"
     },
     FUNCTION_SPI1: {
         PORT_SD: "spi1_sd_d0_d1_d2_d3"
