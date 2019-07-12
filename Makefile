@@ -4,9 +4,13 @@ BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
 TFTP_INTERFACE=eno1
 
-.PHONY: upload run_tftpd update_linux update_uboot
+.PHONY: bootstrap upload run_tftpd update_linux update_uboot
 
 all: buildroot
+
+bootstrap:
+	git submodule init
+	git submodule update
 
 dldir:
 	mkdir -p ./dl

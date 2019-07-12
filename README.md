@@ -1,3 +1,14 @@
+#Building
+
+For the first build you probably need to pull in the submodules.
+
+```
+make bootstrap
+make
+```
+
+After that running ```make``` alone should be enough.
+
 # Getting access the u-boot prompt
 
 The ch340e usb->uart bridge doesn't like the sudden change in baud rate
