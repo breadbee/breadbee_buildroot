@@ -1,5 +1,20 @@
 # Building
 
+Assuming you're on a recent Debian or Debian-like system you
+should only need to install these packages:
+
+```
+build-essential
+file
+wget
+cpio
+python
+unzip
+rsync
+bc
+git
+```
+
 For the first build you probably need to pull in the submodules.
 
 ```
