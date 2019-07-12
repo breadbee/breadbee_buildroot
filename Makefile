@@ -58,4 +58,9 @@ update_linux:
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
 	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
+	@echo "Hit ctrl-c to stop."
 	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) ./buildroot/output/images/
+
+buildindocker:
+	docker build -t breadbee_buildroot .
+	docker run -v $(shell pwd):/breadbee_buildroot -t breadbee_buildroot sh -c "cd /breadbee_buildroot && make"
