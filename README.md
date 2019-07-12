@@ -16,6 +16,15 @@ when the board is booting and will inject some junk. To stop that breaking
 auto boot instead of stopping auto boot and going to the u-boot prompt
 on any input u-boot is configured to wait for the string "bzzbzz" instead.
 
+# SSH Access
+
+[br2autosshkey](https://github.com/fifteenhex/br2autosshkey) will create
+an ssh key and grant access to sudo for a user called "bzzbzz". The public
+and private keys for the user will be in ```buildroot/output/sshkeys/bzzbzz```.
+You can use the private key to login via SSH by doing something like
+```ssh -i buildroot/output/sshkeys/bzzbzz/bzzbzz bzzbzz@<board ip>```.
+
+
 # Overlay naming convention
 
 - overlays : function_pingroup
@@ -70,3 +79,4 @@ Don't do this unless you have a way to reflash u-boot if it gets broken!
 ```
 if dhcp nor-16.img; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000; fi
 ```
+
