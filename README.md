@@ -60,7 +60,7 @@ sf probe; if sf read ${loadaddr} 0x80000 0x300000; then bootm ${loadaddr}#base#o
 
 # Updating parts of the firmware
 
-Run ```make run_tftpd``` to get a local tftp server.
+Run ```make run_tftpd``` to get a local tftp server. You will need permission to use sudo.
 Use ```setenv serverip <ip address>``` to point at your tftp server.
 
 ## Replacing the kernel and rootfs via tftp:
