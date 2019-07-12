@@ -37,7 +37,7 @@ on any input u-boot is configured to wait for the string "bzzbzz" instead.
 an ssh key and grant access to sudo for a user called "bzzbzz". The public
 and private keys for the user will be in ```buildroot/output/sshkeys/bzzbzz```.
 You can use the private key to login via SSH by doing something like
-```ssh -i buildroot/output/sshkeys/bzzbzz/bzzbzz bzzbzz@<board ip>```.
+```ssh -i buildroot/output/sshkeys/bzzbzz bzzbzz@<board ip>```.
 
 
 # Overlay naming convention
@@ -60,7 +60,8 @@ sf probe; if sf read ${loadaddr} 0x80000 0x300000; then bootm ${loadaddr}#base#o
 
 # Updating parts of the firmware
 
-Run ```make run_tftpd``` to get a local tftp server. You will need permission to use sudo.
+Run ```make run_tftpd``` to get a local tftp server. 
+You will need permission to use sudo and may need to open port 69 on the host machine.
 Use ```setenv serverip <ip address>``` to point at your tftp server.
 
 ## Replacing the kernel and rootfs via tftp:
