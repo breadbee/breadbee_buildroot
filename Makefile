@@ -2,7 +2,12 @@ BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
-TFTP_INTERFACE=eno1
+
+ifeq ($(TFTP_INTERFACE),)
+	TFTP_INTERFACE=$(shell ip addr | grep BROADCAST | grep -v "docker" | head -n 1 | cut -d ":" -f 2 | tr -d '[:space:]')
+endif
+IP_ADDR=$(shell ip addr | grep -A 2 $(TFTP_INTERFACE) | grep -Po '(?<=inet )([1-9]{1,3}\.){3}[1-9]{1,3}')
+
 
 .PHONY: bootstrap upload run_tftpd update_linux update_uboot
 
@@ -51,4 +56,6 @@ update_linux:
 	rm -rf buildroot/output/build/linux-msc313e/
 
 run_tftpd:
-	sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) ./buildroot/output/images/
+	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
+	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
+	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) ./buildroot/output/images/
