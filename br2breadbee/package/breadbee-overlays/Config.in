@@ -1,4 +1,5 @@
 config BR2_PACKAGE_BREADBEE_OVERLAYS
 	bool "breadbee_overlays"
+	select BR2_PACKAGE_HOST_DTC
 	help
 	  Breadbee overlays
