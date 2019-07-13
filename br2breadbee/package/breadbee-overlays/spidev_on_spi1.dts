@@ -9,7 +9,7 @@
 		__overlay__ {
 			spidev@1 {
 				compatible = "spidev";
-				spi-max-frequency = <10000>;
+				spi-max-frequency = <10000000>;
 				reg = <0>;
 			};
 		};
