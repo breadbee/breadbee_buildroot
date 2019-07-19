@@ -103,3 +103,8 @@ Don't do this unless you have a way to reflash u-boot if it gets broken!
 if dhcp nor-16.img; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 0x0 0x1000000; fi
 ```
 
+## Booting the RAM only rescue image
+
+```
+if dhcp rescue.fit.img; then bootm; fi
+```
