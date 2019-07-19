@@ -74,6 +74,13 @@ if dhcp nor-16.img; then; sf probe; sf erase 0x80000 0xf80000; sf write 0x220800
 
 ```
 if dhcp kernel.fit.img; then;sf probe;sf erase 0x80000 0x300000;sf write 0x22000000 0x80000 0x300000;fi
+
+```
+
+## Replacing just the rootfs
+
+```
+if dhcp nor-16.img; then; sf probe; sf erase 0x380000 0xc80000; sf write 0x22380000 0x380000 0xc80000; fi
 ```
 
 ## Replacing u-boot
