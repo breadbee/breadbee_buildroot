@@ -45,6 +45,11 @@ buildroot_clean:
 buildroot: dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
+	cp $(BUILDROOT_PATH)/output/images/nor-16.img ./outputs
+	cp $(BUILDROOT_PATH)/output/images/kernel.fit.img ./outputs
+	cp $(BUILDROOT_PATH)/output/images/u-boot.bin ./outputs
+	cp $(BUILDROOT_PATH)/output/images/u-boot.img ./outputs
+	cp $(BUILDROOT_PATH)/output/images/u-boot-spl.bin ./outputs
 
 buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
@@ -54,7 +59,7 @@ buildroot_rescue_config:
 buildroot_rescue: outputdir dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
-	cp buildroot_rescue/output/images/kernel.fit.img ./outputs/rescue.fit.img
+	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img ./outputs/rescue.fit.img
 
 buildroot_rescue_clean:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
