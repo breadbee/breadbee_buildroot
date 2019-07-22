@@ -1,3 +1,5 @@
+OUTPUTS=./outputs
+
 #main buildroot variables
 BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
@@ -28,7 +30,7 @@ dldir:
 	mkdir -p ./dl
 
 outputdir:
-	mkdir -p ./outputs
+	mkdir -p $(OUTPUTS)
 
 clean_localpkgs:
 	rm -rf buildroot/output/build/breadbee-overlays-*/
@@ -45,12 +47,12 @@ buildroot_clean:
 buildroot: outputdir dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
-	cp $(BUILDROOT_PATH)/output/images/nor-16.img ./outputs
-	cp $(BUILDROOT_PATH)/output/images/kernel.fit.img ./outputs
-	cp $(BUILDROOT_PATH)/output/images/u-boot.bin ./outputs
-	cp $(BUILDROOT_PATH)/output/images/u-boot.img ./outputs
-	cp $(BUILDROOT_PATH)/output/images/u-boot-spl.bin ./outputs
-	cp $(BUILDROOT_PATH)/output/images/rootfs.squashfs ./outputs
+	cp $(BUILDROOT_PATH)/output/images/nor-16.img $(OUTPUTS)
+	cp $(BUILDROOT_PATH)/output/images/kernel.fit.img $(OUTPUTS)
+	cp $(BUILDROOT_PATH)/output/images/u-boot.bin $(OUTPUTS)
+	cp $(BUILDROOT_PATH)/output/images/u-boot.img $(OUTPUTS)
+	cp $(BUILDROOT_PATH)/output/images/u-boot-spl.bin $(OUTPUTS)
+	cp $(BUILDROOT_PATH)/output/images/rootfs.squashfs $(OUTPUTS)
 
 
 buildroot_rescue_config:
@@ -61,7 +63,7 @@ buildroot_rescue_config:
 buildroot_rescue: outputdir dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
-	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img ./outputs/rescue.fit.img
+	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img $(OUTPUTS)/rescue.fit.img
 
 buildroot_rescue_clean:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
@@ -71,7 +73,7 @@ upload: buildroot
 	scp buildroot/output/images/rootfs.squashfs tftp:/srv/tftp/rootfs.msc313e
 
 clean: buildroot_clean buildroot_rescue_clean
-	rm -rf outputdir
+	rm -rf $(OUTPUTS)
 
 update_uboot:
 	git -C dl/uboot/git fetch --all
