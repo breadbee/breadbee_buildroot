@@ -42,7 +42,7 @@ buildroot_config:
 buildroot_clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 
-buildroot: dldir clean_localpkgs
+buildroot: outputdir dldir clean_localpkgs
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
 	cp $(BUILDROOT_PATH)/output/images/nor-16.img ./outputs
@@ -50,6 +50,8 @@ buildroot: dldir clean_localpkgs
 	cp $(BUILDROOT_PATH)/output/images/u-boot.bin ./outputs
 	cp $(BUILDROOT_PATH)/output/images/u-boot.img ./outputs
 	cp $(BUILDROOT_PATH)/output/images/u-boot-spl.bin ./outputs
+	cp $(BUILDROOT_PATH)/output/images/rootfs.squashfs ./outputs
+
 
 buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
