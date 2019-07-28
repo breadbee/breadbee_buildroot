@@ -60,7 +60,7 @@ buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) menuconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) savedefconfig
 
-buildroot_rescue: outputdir dldir clean_localpkgs
+buildroot_rescue: outputdir dldir
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
 	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img $(OUTPUTS)/rescue.fit.img
