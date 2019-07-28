@@ -42,6 +42,7 @@ FUNCTION_PWM4 = "pwm4"
 FUNCTION_PWM5 = "pwm5"
 FUNCTION_PWM6 = "pwm6"
 FUNCTION_PWM7 = "pwm7"
+FUNCTION_UART1 = "uart1"
 FUNCTION_FUART = "fuart"
 
 pinmux_config = {}
@@ -111,7 +112,8 @@ muxoptions_fuart = {
     FUNCTION_PWM0: set([15]),
     FUNCTION_PWM1: set([16]),
     FUNCTION_PWM2: set([17]),
-    FUNCTION_PWM3: set([18])
+    FUNCTION_PWM3: set([18]),
+    FUNCTION_UART1: set([17, 18]),
 }
 
 pins_sd = set([2, 3, 4, 5, 6, 7])
@@ -141,6 +143,9 @@ overlay_exceptions = {
     },
     FUNCTION_PWM3: {
         PORT_FUART: "pwm3_fuart_rts"
+    },
+    FUNCTION_UART1: {
+        PORT_FUART: "uart1_fuart_cts_rts"
     },
     FUNCTION_PWM4: {
         PORT_SPI0: "pwm4_spi0_cz"

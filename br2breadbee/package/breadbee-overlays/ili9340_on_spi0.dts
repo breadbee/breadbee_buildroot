@@ -8,7 +8,7 @@
 		target = <&mspi0>;
 		__overlay__ {
 			display@0{
-				compatible = "ilitek,ili9341";
+				compatible = "ilitek,ili9340";
 				reg = <0>;
 				regwidth = <8>;
 				buswidth = <8>;
@@ -17,7 +17,6 @@
 				dc-gpios = <&gpio 10 0>;    /* sr_io6 */
 				reset-gpios = <&gpio 11 0>; /* sr_io7 */
 				rotation = <270>;
-				bgr;
 			};
 		};
 	};
