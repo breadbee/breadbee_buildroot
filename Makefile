@@ -32,9 +32,11 @@ dldir:
 outputdir:
 	mkdir -p $(OUTPUTS)
 
-clean_localpkgs:
-	rm -rf buildroot/output/build/breadbee-overlays-*/
-	rm -rf buildroot/output/build/beecfg-*/
+define clean_localpkgs
+	rm -rf $(1)/output/build/breadbee-overlays-*/
+	rm -rf $(1)/output/build/beecfg-*/
+	rm -rf $(1)/output/build/flasher-*/
+endef
 
 buildroot_config:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
@@ -44,7 +46,8 @@ buildroot_config:
 buildroot_clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 
-buildroot: outputdir dldir clean_localpkgs
+buildroot: outputdir dldir
+	$(call clean_localpkgs, $(BUILDROOT_PATH))
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
 	cp $(BUILDROOT_PATH)/output/images/nor-16.img $(OUTPUTS)
@@ -61,6 +64,7 @@ buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) savedefconfig
 
 buildroot_rescue: outputdir dldir
+	$(call clean_localpkgs, $(BUILDROOT_RESCUE_PATH))
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
 	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img $(OUTPUTS)/rescue.fit.img

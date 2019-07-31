@@ -1,0 +1,4 @@
+config BR2_PACKAGE_FLASHER
+	bool "flasher"
+	help
+	  Breadbee flashing script
