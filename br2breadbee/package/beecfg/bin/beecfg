@@ -34,6 +34,7 @@ port_connector_map = {
 FUNCTION_I2C1 = "i2c1"
 FUNCTION_SPI0 = "spi0"
 FUNCTION_SPI1 = "spi1"
+FUNCTION_SDIO = "sdio"
 FUNCTION_PWM0 = "pwm0"
 FUNCTION_PWM1 = "pwm1"
 FUNCTION_PWM2 = "pwm2"
@@ -118,7 +119,8 @@ muxoptions_fuart = {
 
 pins_sd = set([2, 3, 4, 5, 6, 7])
 muxoptions_sd = {
-    FUNCTION_SPI1: set([2, 3, 4, 5])
+    FUNCTION_SPI1: set([2, 3, 4, 5]),
+    FUNCTION_SDIO: pins_sd
 }
 
 muxoptions_map = {

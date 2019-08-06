@@ -86,13 +86,17 @@ update_uboot:
 	rm -f dl/uboot/uboot-msc313.tar.gz
 	rm -rf $(BUILDROOT_PATH)/output/build/uboot-msc313/
 
+define clean_linux
+	rm -rf $(1)/output/build/linux-msc313e/
+endef
+
 update_linux:
 	git -C dl/linux/git fetch --all
 	git -C dl/linux/git reset --hard origin/msc313e
 	git -C dl/linux/git clean -fd
 	rm -f dl/linux/linux-msc313e.tar.gz
-	rm -rf $(BUILDROOT_RESCUE_PATH)/output/build/linux-msc313e/
-	rm -rf $(BUILDROOT_RESCUE_PATH)/output/build/linux-msc313/
+	$(call clean_linux, $(BUILDROOT_PATH))
+	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
 
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
