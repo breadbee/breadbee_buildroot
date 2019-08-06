@@ -105,6 +105,12 @@ if dhcp nor-16.img; then; sf probe; sf erase 0x0 0x1000000; sf write 0x22000000 
 
 ## Booting the RAM only rescue image
 
+### from flash
+
+sf probe; if sf read ${loadaddr} 0xd00000 0x300000; then bootm ${loadaddr}; fi
+
+### via tftp
+
 ```
 if dhcp rescue.fit.img; then bootm; fi
 ```

@@ -11,6 +11,7 @@ FLASHER_LICENSE = GPLv3
 
 define FLASHER_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/flasher.sh $(TARGET_DIR)/sbin/
+	$(INSTALL) -D -m 0755 $(@D)/update_rescue.sh $(TARGET_DIR)/sbin/
 endef
 
 $(eval $(generic-package))
