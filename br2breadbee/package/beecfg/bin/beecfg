@@ -214,7 +214,7 @@ def update_config():
     newconfig = ""
 
     if len(overlays) > 0:
-        newconfig = "#breadbee#" + "#".join(overlays)
+        newconfig = "#" + "#".join(overlays)
 
     d.yesno(text=newconfig)
 
