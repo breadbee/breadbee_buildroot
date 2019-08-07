@@ -3,10 +3,15 @@
 set -u
 set -e
 
+if [ $# -ne 1 ]; then
+	echo "usage $0 tftp_server_ip"
+	exit 1
+fi
+
 KERNEL_FILENAME="kernel.fit.img"
 ROOTFS_FILENAME="rootfs.squashfs"
 TMPDIR="/tmp/flasher"
-TFTPSERVER="192.168.3.235"
+TFTPSERVER=$1
 
 mkdir -p $TMPDIR
 

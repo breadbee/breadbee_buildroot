@@ -3,9 +3,14 @@
 set -u
 set -e
 
+if [ $# -ne 1 ]; then
+	echo "usage $0 tftp_server_ip"
+	exit 1
+fi
+
 RESCUE_FILENAME="rescue.fit.img"
 TMPDIR="/tmp/flasher"
-TFTPSERVER="192.168.3.235"
+TFTPSERVER=$1
 
 mkdir -p $TMPDIR
 

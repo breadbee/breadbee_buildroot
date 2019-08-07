@@ -98,6 +98,9 @@ update_linux:
 	$(call clean_linux, $(BUILDROOT_PATH))
 	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
 
+linux_rescue_clean:
+	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
+
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
 	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
