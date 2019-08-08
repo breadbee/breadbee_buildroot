@@ -1,0 +1,15 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&fuart>;
+		__overlay__ {
+			pinctrl-0 = <&fuart_rx_tx_pins>;
+			status = "okay";
+		};
+	};
+};
+
