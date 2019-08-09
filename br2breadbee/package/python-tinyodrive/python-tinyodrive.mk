@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-PYTHON_SBUS_VERSION = 0.1
-PYTHON_SBUS_SITE = https://github.com/fifteenhex/python-tinyodrive.git
-PYTHON_SBUS_SITE_METHOD = git
-PYTHON_SBUS_LICENSE = GPLv3
-PYTHON_SBUS_LICENSE_FILES = LICENSE
-PYTHON_SBUS_DEPENDENCIES = python-serial-asyncio
-PYTHON_SBUS_SETUP_TYPE = setuptools
+PYTHON_TINYODRIVE_VERSION = 0.1
+PYTHON_TINYODRIVE_SITE = https://github.com/fifteenhex/python-tinyodrive.git
+PYTHON_TINYODRIVE_SITE_METHOD = git
+PYTHON_TINYODRIVE_LICENSE = GPLv3
+PYTHON_TINYODRIVE_LICENSE_FILES = LICENSE
+PYTHON_TINYODRIVE_DEPENDENCIES = python-serial-asyncio
+PYTHON_TINYODRIVE_SETUP_TYPE = setuptools
 
 $(eval $(python-package))
