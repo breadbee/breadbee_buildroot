@@ -61,13 +61,26 @@ and private keys for the user will be in ```buildroot/output/sshkeys/bzzbzz```.
 You can use the private key to login via SSH by doing something like
 ```ssh -i buildroot/output/sshkeys/bzzbzz bzzbzz@<board ip>```.
 
+Keep in mind this is only intended to be a little bit better than a hardcoded password.
+
 ## Configuration via beecfg
 
 TODO
 
 ## Adding apps, your own code, doing useful stuff
 
-TODO
+The first thing you should do is to create your own fork of this repo.
+Then create yourself a project branch for the project you're working on
+so that you can update master at any time and not have merge conflicts.
+
+### Adding your own apps to the firmware
+
+A skeleton buildroot external directory is provided in ```br2apps``` for
+you to add your packages into.
+
+### App container
+
+TBD
 
 ## Updating/recovery using the rescue image
 

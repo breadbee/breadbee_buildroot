@@ -4,7 +4,7 @@ OUTPUTS=./outputs
 BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
-	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
+	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps"
 
 #rescue buildroot path
 BUILDROOT_RESCUE_PATH=./buildroot_rescue

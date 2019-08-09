@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MYAPP
+        bool "myapp"
+	select BR2_PACKAGE_PYTHON3
+        help
+          MyApp
