@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_SBUS
+        bool "python-sbus"
+	select BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_SERIAL_ASYNCIO
+        help
+          python-sbus
