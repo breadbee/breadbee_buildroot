@@ -1,11 +1,11 @@
 ################################################################################
 #
-# python-sbus
+# python-tinyodrive
 #
 ################################################################################
 
 PYTHON_SBUS_VERSION = 0.1
-PYTHON_SBUS_SITE = https://github.com/fifteenhex/python-sbus.git
+PYTHON_SBUS_SITE = https://github.com/fifteenhex/python-tinyodrive.git
 PYTHON_SBUS_SITE_METHOD = git
 PYTHON_SBUS_LICENSE = GPLv3
 PYTHON_SBUS_LICENSE_FILES = LICENSE
