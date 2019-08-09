@@ -5,11 +5,10 @@
 	compatible = "thingyjp,thumbee";
 
 	fragment@0 {
-		target = <&fuart>;
+		target = <&uart1>;
 		__overlay__ {
-			pinctrl-0 = <&fuart_rx_tx_pins>;
+			pinctrl-0 = <&uart1_cts_pins>;
 			status = "okay";
 		};
 	};
 };
-

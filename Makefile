@@ -90,13 +90,14 @@ define clean_linux
 	rm -rf $(1)/output/build/linux-msc313e/
 endef
 
-update_linux:
+update_linux: linux_clean linux_rescue_clean
 	git -C dl/linux/git fetch --all
 	git -C dl/linux/git reset --hard origin/msc313e
 	git -C dl/linux/git clean -fd
 	rm -f dl/linux/linux-msc313e.tar.gz
+
+linux_clean:
 	$(call clean_linux, $(BUILDROOT_PATH))
-	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
 
 linux_rescue_clean:
 	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
