@@ -79,22 +79,22 @@ upload: buildroot
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
 
+define update_git_package
+	git -C dl/$(1)/git fetch --all
+	git -C dl/$(1)/git reset --hard origin/$(2)
+	git -C dl/$(1)/git clean -fd
+	rm -f dl/$(1)/$(1)-$(2).tar.gz
+endef
+
 update_uboot:
-	git -C dl/uboot/git fetch --all
-	git -C dl/uboot/git reset --hard origin/msc313
-	git -C dl/uboot/git clean -fd
-	rm -f dl/uboot/uboot-msc313.tar.gz
-	rm -rf $(BUILDROOT_PATH)/output/build/uboot-msc313/
+	$(call update_git_package,uboot,msc313)
 
 define clean_linux
 	rm -rf $(1)/output/build/linux-msc313e/
 endef
 
 update_linux: linux_clean linux_rescue_clean
-	git -C dl/linux/git fetch --all
-	git -C dl/linux/git reset --hard origin/msc313e
-	git -C dl/linux/git clean -fd
-	rm -f dl/linux/linux-msc313e.tar.gz
+	$(call update_git_package,linux,msc313e)
 
 linux_clean:
 	$(call clean_linux, $(BUILDROOT_PATH))
