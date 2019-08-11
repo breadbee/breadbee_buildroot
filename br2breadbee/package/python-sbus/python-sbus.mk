@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_SBUS_VERSION = 0.1
+PYTHON_SBUS_VERSION = dev
 PYTHON_SBUS_SITE = https://github.com/fifteenhex/python-sbus.git
 PYTHON_SBUS_SITE_METHOD = git
 PYTHON_SBUS_LICENSE = GPLv3

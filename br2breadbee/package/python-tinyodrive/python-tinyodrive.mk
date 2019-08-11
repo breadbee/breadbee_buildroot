@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_TINYODRIVE_VERSION = 0.1
+PYTHON_TINYODRIVE_VERSION = dev
 PYTHON_TINYODRIVE_SITE = https://github.com/fifteenhex/python-tinyodrive.git
 PYTHON_TINYODRIVE_SITE_METHOD = git
 PYTHON_TINYODRIVE_LICENSE = GPLv3
