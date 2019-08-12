@@ -1,0 +1,4 @@
+config BR2_PACKAGE_RWSETUP
+	bool "rwsetup"
+	help
+	  read/write area setup

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+start() {
+	printf 'Doing RW setup:'
+	mkdir -p /rw/dropbear/
+	echo "OK"
+}
+
+stop() {
+	true
+}
+
+case "$1" in
+	start|stop)
+		"$1";;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+esac
