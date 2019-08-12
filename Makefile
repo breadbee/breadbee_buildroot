@@ -39,8 +39,8 @@ define update_git_package
 	rm -f dl/$(1)/$(1)-$(2).tar.gz
 endef
 
-define clean_linux
-	rm -rf $(1)/output/build/linux-msc313e/
+define clean_pkg
+	rm -rf $(1)/output/build/$(2)/
 endef
 
 .PHONY: bootstrap upload run_tftpd update_linux update_uboot
@@ -99,12 +99,18 @@ clean: buildroot_clean buildroot_rescue_clean
 
 update_uboot:
 	$(call update_git_package,uboot,msc313)
+	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
+
+uboot_clean:
+	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
 
 update_linux: linux_clean linux_rescue_clean
 	$(call update_git_package,linux,msc313e)
+	$(call clean_pkg,$(BUILDROOT_PATH),linux-msc313e)
+	$(call clean_pkg,$(BUILDROOT_RESCUE_PATH),linux-msc313e)
 
 linux_clean:
-	$(call clean_linux, $(BUILDROOT_PATH))
+	$(call clean_pkg,$(BUILDROOT_PATH),linux-msc313e)
 
 linux_rescue_clean:
 	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
