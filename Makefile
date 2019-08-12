@@ -106,8 +106,6 @@ uboot_clean:
 
 update_linux: linux_clean linux_rescue_clean
 	$(call update_git_package,linux,msc313e)
-	$(call clean_pkg,$(BUILDROOT_PATH),linux-msc313e)
-	$(call clean_pkg,$(BUILDROOT_RESCUE_PATH),linux-msc313e)
 
 linux_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),linux-msc313e)
