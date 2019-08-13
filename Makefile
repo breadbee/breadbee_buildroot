@@ -6,7 +6,7 @@ BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=../dl \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps"
 
-# rescue buildroot path
+# rescue buildroot variables
 BUILDROOT_RESCUE_PATH=./buildroot_rescue
 BUILDROOT_RESCUE_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_rescue_defconfig \
 	BR2_DL_DIR=../dl \
@@ -15,10 +15,16 @@ BUILDROOT_RESCUE_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_rescue_defco
 PKGS_BB=$(foreach dir,$(wildcard br2breadbee/package/*/),$(shell basename $(dir)))
 PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
 
+# try to guess the interface for tftp
 ifeq ($(TFTP_INTERFACE),)
 	TFTP_INTERFACE=$(shell ip addr | grep BROADCAST | grep -v "docker" | head -n 1 | cut -d ":" -f 2 | tr -d '[:space:]')
 endif
 IP_ADDR=$(shell ip addr | grep -A 2 $(TFTP_INTERFACE) | grep -Po '(?<=inet )([1-9]{1,3}\.){3}[1-9]{1,3}')
+
+BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+ifneq ($(BRANCH), master)
+	BRANCH_PREFIX=$(BRANCH)-
+endif
 
 # this is crappy hack to get around the fact that buildroot doesn't
 # really support developing in buildroot. By deleting our local stuff
@@ -41,6 +47,10 @@ endef
 
 define clean_pkg
 	rm -rf $(1)/output/build/$(2)/
+endef
+
+define copy_to_outputs
+	cp $(1) $(OUTPUTS)/$(addprefix $(BRANCH_PREFIX), $(if $(2),$(2),$(notdir $(1))))
 endef
 
 .PHONY: bootstrap upload run_tftpd update_linux update_uboot
@@ -69,12 +79,12 @@ buildroot: outputdir dldir
 	$(call clean_localpkgs,$(BUILDROOT_PATH))
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
-	cp $(BUILDROOT_PATH)/output/images/nor-16.img $(OUTPUTS)
-	cp $(BUILDROOT_PATH)/output/images/kernel.fit.img $(OUTPUTS)
-	cp $(BUILDROOT_PATH)/output/images/u-boot.bin $(OUTPUTS)
-	cp $(BUILDROOT_PATH)/output/images/u-boot.img $(OUTPUTS)
-	cp $(BUILDROOT_PATH)/output/images/u-boot-spl.bin $(OUTPUTS)
-	cp $(BUILDROOT_PATH)/output/images/rootfs.squashfs $(OUTPUTS)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/nor-16.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot-spl.bin)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 
 buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
@@ -85,7 +95,7 @@ buildroot_rescue: outputdir dldir
 	$(call clean_localpkgs,$(BUILDROOT_RESCUE_PATH))
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
-	cp $(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img $(OUTPUTS)/rescue.fit.img
+	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img,rescue.fit.img)
 
 buildroot_rescue_clean:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
