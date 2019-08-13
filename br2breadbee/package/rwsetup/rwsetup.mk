@@ -13,4 +13,8 @@ define RWSETUP_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 $(@D)/S22rwsetup $(TARGET_DIR)/etc/init.d/S22rwsetup
 endef
 
+define RWSETUP_INSTALL_TARGET_CMDS
+	mkdir -p $(TARGET_DIR)/rw
+endef
+
 $(eval $(generic-package))
