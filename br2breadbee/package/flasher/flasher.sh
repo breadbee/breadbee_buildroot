@@ -2,7 +2,7 @@
 
 set -u
 set -e
-set -x
+#set -x
 
 if [ $# -ne 1 -a $# -ne 2 ]; then
 	echo "usage $0 tftp_server_ip [flavour]"

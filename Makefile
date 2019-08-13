@@ -1,15 +1,16 @@
 OUTPUTS=./outputs
+DLDIR=./dl
 
 # main buildroot variables
 BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
-	BR2_DL_DIR=../dl \
+	BR2_DL_DIR=$(DLDIR) \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps"
 
 # rescue buildroot variables
 BUILDROOT_RESCUE_PATH=./buildroot_rescue
 BUILDROOT_RESCUE_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_rescue_defconfig \
-	BR2_DL_DIR=../dl \
+	BR2_DL_DIR=$(DLDIR) \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
 
 PKGS_BB=$(foreach dir,$(wildcard br2breadbee/package/*/),$(shell basename $(dir)))
@@ -53,7 +54,13 @@ define copy_to_outputs
 	cp $(1) $(OUTPUTS)/$(addprefix $(BRANCH_PREFIX), $(if $(2),$(2),$(notdir $(1))))
 endef
 
-.PHONY: bootstrap upload run_tftpd update_linux update_uboot
+.PHONY: bootstrap \
+	buildindocker \
+	buildroot \
+	buildroot_rescue \
+	run_tftpd \
+	update_linux \
+	update_uboot
 
 all: buildroot buildroot_rescue
 
@@ -61,10 +68,10 @@ bootstrap:
 	git submodule init
 	git submodule update
 
-dldir:
-	mkdir -p ./dl
+$(DLDIR):
+	mkdir -p $(DLDIR)
 
-outputdir:
+$(OUTPUTS):
 	mkdir -p $(OUTPUTS)
 
 buildroot_config:
@@ -75,7 +82,7 @@ buildroot_config:
 buildroot_clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 
-buildroot: outputdir dldir
+buildroot: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_PATH))
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
@@ -91,7 +98,7 @@ buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) menuconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) savedefconfig
 
-buildroot_rescue: outputdir dldir
+buildroot_rescue: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_RESCUE_PATH))
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
@@ -99,10 +106,6 @@ buildroot_rescue: outputdir dldir
 
 buildroot_rescue_clean:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
-
-upload: buildroot
-	scp buildroot/output/images/nor-16.img tftp:/srv/tftp/nor-16.img.breadbee
-	scp buildroot/output/images/rootfs.squashfs tftp:/srv/tftp/rootfs.msc313e
 
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
