@@ -1,5 +1,5 @@
-OUTPUTS=./outputs
-DLDIR=./dl
+OUTPUTS=$(PWD)/outputs
+DLDIR=$(PWD)/dl
 
 # main buildroot variables
 BUILDROOT_PATH=./buildroot
