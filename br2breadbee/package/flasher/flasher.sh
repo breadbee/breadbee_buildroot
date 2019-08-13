@@ -2,14 +2,22 @@
 
 set -u
 set -e
+set -x
 
-if [ $# -ne 1 ]; then
-	echo "usage $0 tftp_server_ip"
+if [ $# -ne 1 -a $# -ne 2 ]; then
+	echo "usage $0 tftp_server_ip [flavour]"
 	exit 1
 fi
 
-KERNEL_FILENAME="kernel.fit.img"
-ROOTFS_FILENAME="rootfs.squashfs"
+set +u
+FLAVOUR_PREFIX=""
+if [ -n "$2" ]; then
+	FLAVOUR_PREFIX="${2}-"
+fi
+set -u
+
+KERNEL_FILENAME="${FLAVOUR_PREFIX}kernel.fit.img"
+ROOTFS_FILENAME="${FLAVOUR_PREFIX}rootfs.squashfs"
 TMPDIR="/tmp/flasher"
 TFTPSERVER=$1
 
