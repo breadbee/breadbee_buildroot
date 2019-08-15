@@ -1,0 +1,21 @@
+#!/bin/sh
+
+source /etc/sandbox.conf
+
+start() {
+	printf 'Starting Sandbox:'
+	mount -t nfs $NFS_VOLUME /sandbox
+	echo "OK"
+}
+
+stop() {
+	true
+}
+
+case "$1" in
+	start|stop)
+		"$1";;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+esac

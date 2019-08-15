@@ -1,0 +1,12 @@
+config BR2_PACKAGE_SANDBOX
+	bool "sandbox"
+	help
+	  sandbox
+
+config BR2_PACKAGE_SANDBOX_NFS
+	bool "Sandbox on NFS"
+	depends on BR2_PACKAGE_SANDBOX
+
+config BR2_PACKAGE_SANDBOX_NFS_VOLUME
+	string "NFS volume"
+	depends on BR2_PACKAGE_SANDBOX_NFS
