@@ -10,7 +10,7 @@ SANDBOX_SITE_METHOD = local
 SANDBOX_LICENSE = GPLv3
 
 define SANDBOX_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 755 $(@D)/S22sandbox.nfs $(TARGET_DIR)/etc/init.d/S22sandbox
+	$(INSTALL) -D -m 755 $(@D)/S41sandbox.nfs $(TARGET_DIR)/etc/init.d/S41sandbox
 endef
 
 define SANDBOX_INSTALL_TARGET_CMDS
