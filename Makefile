@@ -98,11 +98,17 @@ buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) menuconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) savedefconfig
 
+ifeq ($(BRANCH), master)
 buildroot_rescue: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_RESCUE_PATH))
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
 	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img,rescue.fit.img)
+else
+buildroot_rescue:
+	@echo "rescue is only built for master, your branch is $(BRANCH)"
+endif
+
 
 buildroot_rescue_clean:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
