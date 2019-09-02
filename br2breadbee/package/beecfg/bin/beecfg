@@ -22,13 +22,15 @@ PORT_SPI0 = "spi0"
 PORT_SAR = "sar"
 PORT_FUART = "fuart"
 PORT_SD = "sd"
+PORT_USB = "usb"
 
 port_connector_map = {
     PORT_I2C1: CONNECTOR_J2,
     PORT_SPI0: CONNECTOR_J2,
     PORT_SAR: CONNECTOR_J2,
     PORT_FUART: CONNECTOR_J2,
-    PORT_SD: CONNECTOR_J1
+    PORT_SD: CONNECTOR_J1,
+    PORT_USB: CONNECTOR_J1
 }
 
 FUNCTION_I2C1 = "i2c1"
@@ -47,6 +49,7 @@ FUNCTION_UART1 = "uart1"
 FUNCTION_UART1_RX = "uart1_rx"
 FUNCTION_FUART = "fuart"
 FUNCTION_FUART_RXTX = "fuart_rx_tx_rts"
+FUNCTION_USBHOST = "usbhost"
 
 pinmux_config = {}
 
@@ -127,12 +130,18 @@ muxoptions_sd = {
     FUNCTION_SDIO: pins_sd
 }
 
+pins_usb = set([11, 12])
+muxoptions_usb = {
+    FUNCTION_USBHOST: pins_usb,
+}
+
 muxoptions_map = {
     PORT_I2C1: muxoptions_i2c1,
     PORT_SPI0: muxoptions_spi0,
     PORT_SAR: muxoptions_sar,
     PORT_FUART: muxoptions_fuart,
-    PORT_SD: muxoptions_sd
+    PORT_SD: muxoptions_sd,
+    PORT_USB: muxoptions_usb
 }
 
 # this is for mapping the less uniform dts overlay
