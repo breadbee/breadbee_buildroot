@@ -59,8 +59,8 @@ endef
 	buildroot \
 	buildroot_rescue \
 	run_tftpd \
-	update_linux \
-	update_uboot
+	linux_update \
+	uboot_update
 
 all: buildroot buildroot_rescue
 
@@ -116,14 +116,14 @@ buildroot_rescue_clean:
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
 
-update_uboot:
+uboot_update:
 	$(call update_git_package,uboot,msc313)
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
 
 uboot_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
 
-update_linux: linux_clean linux_rescue_clean
+linux_update: linux_clean linux_rescue_clean
 	$(call update_git_package,linux,msc313e)
 
 linux_clean:
