@@ -21,7 +21,7 @@
 			};
 		};
 		fdt@0 {
-			data = /incbin/("../../images/msc313e-breadbee.dtb");
+			data = /incbin/("../../images/infinity3-msc313e-breadbee.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
@@ -34,7 +34,20 @@
 			};
 		};
 		fdt@1 {
-			data = /incbin/("../../images/msc313-breadbee_crust.dtb");
+			data = /incbin/("../../images/infinity-msc313-breadbee_crust.dtb");
+			type = "flat_dt";
+			arch = "arm";
+			compression = "none";
+			load = <0x23000000>;
+			hash@1 {
+				algo = "crc32";
+			};
+			hash@2 {
+				algo = "sha1";
+			};
+		};
+		fdt@2 {
+			data = /incbin/("../../images/infinity3-msc313e-wiibee.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
@@ -58,6 +71,10 @@
 		breadbee_crust {
 			kernel = "kernel@0";
 			fdt = "fdt@1";
+		};
+		wiibee {
+			kernel = "kernel@0";
+			fdt = "fdt@2";
 		};
 		/include/ "../../images/breadbee-overlays/configlist"
 	};
