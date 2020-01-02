@@ -16,6 +16,8 @@ BUILDROOT_RESCUE_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_rescue_defco
 PKGS_BB=$(foreach dir,$(wildcard br2breadbee/package/*/),$(shell basename $(dir)))
 PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
 
+UBOOT_BRANCH=mstar
+
 # try to guess the interface for tftp
 ifeq ($(TFTP_INTERFACE),)
 	TFTP_INTERFACE=$(shell ip addr | grep BROADCAST | grep -v "docker" | head -n 1 | cut -d ":" -f 2 | tr -d '[:space:]')
@@ -117,8 +119,8 @@ clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
 
 uboot_update:
-	$(call update_git_package,uboot,msc313)
-	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
+	$(call update_git_package,uboot,$(UBOOT_BRANCH))
+	$(call clean_pkg,$(BUILDROOT_PATH),uboot-$(UBOOT_BRANCH))
 
 uboot_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
@@ -136,7 +138,7 @@ run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
 	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
 	@echo "Hit ctrl-c to stop."
-	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) ./outputs
+	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) -r ./outputs
 
 buildindocker:
 	docker build -t breadbee_buildroot .
