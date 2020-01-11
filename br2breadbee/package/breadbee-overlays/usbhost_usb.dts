@@ -5,6 +5,12 @@
 	compatible = "thingyjp,thumbee";
 
 	fragment@0 {
+		target = <&usbphy0>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@1 {
 		target = <&uhc0>;
 		__overlay__ {
 			status = "okay";
