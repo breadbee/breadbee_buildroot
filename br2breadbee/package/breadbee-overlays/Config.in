@@ -12,10 +12,27 @@ config	BR2_PACKAGE_BREADBEE_OVERLAYS_IR
 	help
 	  IR support
 
+if BR2_PACKAGE_BREADBEE_OVERLAYS_IR
+config BR2_PACKAGE_BREADBEE_OVERLAYS_IR_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/lirc"
+endif
+
 config	BR2_PACKAGE_BREADBEE_OVERLAYS_SPI
 	bool "SPI support"
 	select BR2_PACKAGE_SPI_TOOLS
 	help
 	  SPI support
+
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
+	bool "FPGA support"
+	help
+	  FPGA support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
+config BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/fpga"
+endif
 
 endif
