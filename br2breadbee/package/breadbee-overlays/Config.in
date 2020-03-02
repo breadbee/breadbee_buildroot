@@ -1,5 +1,15 @@
 config BR2_PACKAGE_BREADBEE_OVERLAYS
-	bool "breadbee_overlays"
+	bool "breadbee overlays"
 	select BR2_PACKAGE_HOST_DTC
 	help
 	  Breadbee overlays
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS
+
+config	BR2_PACKAGE_BREADBEE_OVERLAYS_IR
+	bool "IR support"
+	select	BR2_PACKAGE_LIRC_TOOLS
+	help
+	  IR support
+
+endif
