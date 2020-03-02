@@ -1,0 +1,5 @@
+config BR2_PACKAGE_SWANKYPYTHON
+	bool "swankypython"
+	select BR2_PACKAGE_PYTHON3_READLINE
+	help
+	  Nice default python setup for coding directly on the board
