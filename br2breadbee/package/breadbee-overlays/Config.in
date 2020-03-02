@@ -8,8 +8,14 @@ if BR2_PACKAGE_BREADBEE_OVERLAYS
 
 config	BR2_PACKAGE_BREADBEE_OVERLAYS_IR
 	bool "IR support"
-	select	BR2_PACKAGE_LIRC_TOOLS
+	select BR2_PACKAGE_LIRC_TOOLS
 	help
 	  IR support
+
+config	BR2_PACKAGE_BREADBEE_OVERLAYS_SPI
+	bool "SPI support"
+	select BR2_PACKAGE_SPI_TOOLS
+	help
+	  SPI support
 
 endif
