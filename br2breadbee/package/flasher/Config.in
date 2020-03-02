@@ -1,4 +1,9 @@
 config BR2_PACKAGE_FLASHER
 	bool "flasher"
+	select BR2_PACKAGE_MTD
+	select BR2_PACKAGE_MTD_FLASHCP
+	select BR2_PACKAGE_MTD_FLASH_ERASE
+	select BR2_PACKAGE_MTD_FLASH_LOCK
+	select BR2_PACKAGE_MTD_FLASH_UNLOCK
 	help
 	  Breadbee flashing script
