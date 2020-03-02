@@ -8,3 +8,10 @@ source "$BR2_EXTERNAL_BREADBEE_PATH/package/python-tinyodrive/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/rwsetup/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/sandbox/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/swankypython/Config.in"
+
+config BR2_BREADBEE_MFGTOOLS
+	bool "install stuff for mfg"
+	select BR2_PACKAGE_FLASHROM
+	select BR2_PACKAGE_DHRYSTONE
+	help
+	  Install packages used at mfg
