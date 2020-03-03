@@ -1,0 +1,20 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "thingyjp,thumbee";
+
+	fragment@0 {
+		target = <&mspi0>;
+		__overlay__ {
+			fpga@0 {
+				compatible = "lattice,ice40-fpga-mgr";
+				reg = <0>;
+				spi-max-frequency = <1000000>;
+				cdone-gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+				reset-gpios = <&gpio 1 GPIO_ACTIVE_LOW>;
+			};
+		};
+	};
+};
+
