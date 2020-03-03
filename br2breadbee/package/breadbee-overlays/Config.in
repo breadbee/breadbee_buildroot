@@ -24,6 +24,17 @@ config	BR2_PACKAGE_BREADBEE_OVERLAYS_SPI
 	help
 	  SPI support
 
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_USB
+	bool "USB support"
+	help
+	  USB support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_USB
+config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb"
+endif
+
 config  BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
 	bool "FPGA support"
 	help
