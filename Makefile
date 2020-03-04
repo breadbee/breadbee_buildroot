@@ -41,10 +41,12 @@ endef
 
 define update_git_package
 	@echo updating git package $(1)
-	git -C dl/$(1)/git fetch --force --all --tags
-	- git -C dl/$(1)/git reset --hard origin/$(2)
-	- git -C dl/$(1)/git reset --hard $(2)
 	git -C dl/$(1)/git clean -fd
+	git -C dl/$(1)/git fetch --force --all --tags
+	git -C dl/$(1)/git checkout master
+	- git -C dl/$(1)/git branch -D $(2)
+	git -C dl/$(1)/git checkout -b $(2)
+	git -C dl/$(1)/git reset --hard origin/$(2)
 	rm -f dl/$(1)/$(1)-$(2).tar.gz
 endef
 
@@ -125,11 +127,13 @@ uboot_update:
 uboot_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
 
+LINUX_BRANCH=msc313e_dev_v5_6
+
 linux_update: linux_clean linux_rescue_clean
-	$(call update_git_package,linux,msc313e_dev)
+	$(call update_git_package,linux,$(LINUX_BRANCH))
 
 linux_clean:
-	$(call clean_pkg,$(BUILDROOT_PATH),linux-msc313e_dev)
+	$(call clean_pkg,$(BUILDROOT_PATH),linux-$(LINUX_BRANCH))
 
 linux_rescue_clean:
 	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
