@@ -18,6 +18,8 @@ PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
 
 UBOOT_BRANCH=mstar
 
+LINUX_BRANCH=msc313e_dev_v5_6
+
 # try to guess the interface for tftp
 ifeq ($(TFTP_INTERFACE),)
 	TFTP_INTERFACE=$(shell ip addr | grep BROADCAST | grep -v "docker" | head -n 1 | cut -d ":" -f 2 | tr -d '[:space:]')
@@ -64,6 +66,8 @@ endef
 	buildroot_rescue \
 	run_tftpd \
 	linux_update \
+	linux_clean \
+	linux_rescue_clean \
 	uboot_update
 
 all: buildroot buildroot_rescue
@@ -127,8 +131,6 @@ uboot_update:
 uboot_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
 
-LINUX_BRANCH=msc313e_dev_v5_6
-
 linux_update: linux_clean linux_rescue_clean
 	$(call update_git_package,linux,$(LINUX_BRANCH))
 
@@ -136,7 +138,7 @@ linux_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),linux-$(LINUX_BRANCH))
 
 linux_rescue_clean:
-	$(call clean_linux, $(BUILDROOT_RESCUE_PATH))
+	$(call clean_pkg, $(BUILDROOT_RESCUE_PATH),linux-$(LINUX_BRANCH))
 
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
