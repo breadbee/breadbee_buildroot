@@ -20,6 +20,18 @@ fit_ovrly_template = string.Template(
     "};\n")
 
 
+def extract_tokens(dts):
+    tokens = {}
+    with open(dts) as f:
+        for l in f.readlines():
+            if l.startswith("//bbovly-"):
+                kv = l.split("-")[1].split(":")
+                assert len(kv) == 2
+                tokens[kv[0]] = kv[1].strip()
+                pass
+    return tokens
+
+
 def compile_dts(dts):
     dts_preproccessed = dts.with_suffix(".dts_pp")
     gcc_args = [args.cpp, "-nostdinc", "-I", args.bindings, "-undef,", "-x", "assembler-with-cpp", str(dts.absolute()),
@@ -43,6 +55,7 @@ if __name__ == '__main__':
     parser.add_argument("--dtc", required=True)
     parser.add_argument("--overlays", required=True)
     parser.add_argument("--imggenoutputs", required=True)
+    parser.add_argument('category', nargs='*')
 
     args = parser.parse_args()
 
@@ -58,9 +71,21 @@ if __name__ == '__main__':
 
     load_offset = 0x23008000
 
-    for ovl in os.listdir(dts_dir):
+    for ovl in sorted(os.listdir(dts_dir)):
         if ovl.endswith(".dts"):
             dts_path = dts_dir / ovl
+
+            tokens = extract_tokens(dts_path)
+
+            category = tokens.get("category")
+
+            if category is None:
+                print("%s doesn't have a category.." % dts_path)
+
+            if category not in args.category:
+                print("Skipping %s, %s not in selected categories (%s)" % (category, dts_path, ",".join(args.category)))
+                continue
+
             dtb = compile_dts(dts_path)
 
             fdtlist += fit_ovrly_template.substitute(name=dts_path.stem, dtb=dtb.absolute(),

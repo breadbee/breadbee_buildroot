@@ -6,6 +6,43 @@ config BR2_PACKAGE_BREADBEE_OVERLAYS
 
 if BR2_PACKAGE_BREADBEE_OVERLAYS
 
+# ADC support
+config	BR2_PACKAGE_BREADBEE_OVERLAYS_ADC
+	bool "ADC support"
+	help
+	  ADC support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_ADC
+config BR2_PACKAGE_BREADBEE_OVERLAYS_ADC_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/adc"
+endif
+
+# FPGA support
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
+	bool "FPGA support"
+	help
+	  FPGA support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
+config BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/fpga"
+endif
+
+# I2C support
+config	BR2_PACKAGE_BREADBEE_OVERLAYS_I2C
+	bool "I2C support"
+	help
+	  I2C support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_I2C
+config BR2_PACKAGE_BREADBEE_OVERLAYS_I2C_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/i2c"
+endif
+
+# IR support
 config	BR2_PACKAGE_BREADBEE_OVERLAYS_IR
 	bool "IR support"
 	select BR2_PACKAGE_LIRC_TOOLS
@@ -18,23 +55,25 @@ config BR2_PACKAGE_BREADBEE_OVERLAYS_IR_KERNEL_FRAGMENT
 	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/lirc"
 endif
 
+# PWM support
+config	BR2_PACKAGE_BREADBEE_OVERLAYS_PWM
+	bool "PWM support"
+	help
+	  PWM support
+
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_W1
+        bool "W1 support"
+        help
+          W1 support
+
+# SPI support
 config	BR2_PACKAGE_BREADBEE_OVERLAYS_SPI
 	bool "SPI support"
 	select BR2_PACKAGE_SPI_TOOLS
 	help
 	  SPI support
 
-config  BR2_PACKAGE_BREADBEE_OVERLAYS_USB
-	bool "USB support"
-	help
-	  USB support
-
-if BR2_PACKAGE_BREADBEE_OVERLAYS_USB
-config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_KERNEL_FRAGMENT
-	string
-	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb"
-endif
-
+# SD support
 config  BR2_PACKAGE_BREADBEE_OVERLAYS_SD
 	bool "SD/SDIO support"
 	help
@@ -46,16 +85,38 @@ config BR2_PACKAGE_BREADBEE_OVERLAYS_SD_KERNEL_FRAGMENT
 	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/sd"
 endif
 
-config  BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
-	bool "FPGA support"
+# UART support
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_UART
+	bool "UART support"
 	help
-	  FPGA support
+	  UART support
 
-if BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
-config BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA_KERNEL_FRAGMENT
+# USB support
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_USB
+	bool "USB support"
+	help
+	  USB support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_USB
+config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_KERNEL_FRAGMENT
 	string
-	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/fpga"
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb"
 endif
+
+# W1 support
+if BR2_PACKAGE_BREADBEE_OVERLAYS_W1
+config BR2_PACKAGE_BREADBEE_OVERLAYS_W1_KERNEL_FRAGMENT
+        string
+        default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/w1"
+endif
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_W1
+config BR2_PACKAGE_BREADBEE_OVERLAYS_W1_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/w1"
+endif
+
+# Misc
 
 config  BR2_PACKAGE_BREADBEE_OVERLAYS_EXT4
 	bool "EXT4 support"
