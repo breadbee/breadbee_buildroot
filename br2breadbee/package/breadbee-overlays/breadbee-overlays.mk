@@ -11,37 +11,13 @@ BREADBEE_OVERLAYS_LICENSE = GPLv3
 BREADBEE_OVERLAYS_INSTALL_IMAGES = YES
 BREADBEE_OVERLAYS_DEPENDENCIES = host-dtc
 
-define BREADBEE_OVERLAYS_INSTALL_DTB_OVERLAYS
-        for ovl in  $(@D)/*.dts; do \
-		$(HOST_DIR)/bin/dtc -@ -a 4 -I dts -O dtb -o $(@D)/$$(basename "$$ovl" .dts).dtb $${ovl}; \
-        done
-
-	rm -f $(BINARIES_DIR)/breadbee-overlays/fdtlist
-	rm -f $(BINARIES_DIR)/breadbee-overlays/configlist
-	off=587235328; for ovldtb in  $(@D)/*.dtb; do \
-		$(INSTALL) -D -m 0644 $${ovldtb} $(BINARIES_DIR)/breadbee-overlays/$${ovldtb##*/}; \
-		echo -e "$$(basename "$$ovldtb" .dtb)_overlay {\n"\
-			" data = /incbin/(\"$${ovldtb}\");\n" \
-			" type = \"flat_dt\";\n" \
-			" arch = \"arm\";\n" \
-			" compression = \"none\";\n" \
-			" load = <$${off}>;\n" \
-			" hash@0 {\n" \
-			"  algo = \"crc32\";\n" \
-			" };\n" \
-                        " hash@1 {\n" \
-			"  algo = \"sha1\";\n" \
-			" };\n" \
-			"};\n\n" >> $(BINARIES_DIR)/breadbee-overlays/fdtlist; \
-		echo -e "$$(basename "$$ovldtb" .dtb) {\n"\
-			" fdt = \"$$(basename "$$ovldtb" .dtb)_overlay\";\n" \
-			"};\n" >> $(BINARIES_DIR)/breadbee-overlays/configlist; \
-		dtbsz=`stat --printf="%s" $${ovldtb}`; off=$$(($${off}+$${dtbsz})); \
-	done
-endef
-
-define BREADBEE_OVERLAYS_INSTALL_IMAGES_CMDS
-	$(BREADBEE_OVERLAYS_INSTALL_DTB_OVERLAYS)
+define BREADBEE_OVERLAYS_BUILD_CMDS
+	$(@D)/build.py \
+		--cpp=$(HOST_DIR)/bin/arm-linux-cpp \
+		--bindings=$(@D)/../linux-msc313e_dev_v5_6/include/ \
+		--dtc=$(HOST_DIR)/bin/dtc \
+		--overlays=$(@D)/dts/ \
+		--imggenoutputs=$(BINARIES_DIR)/breadbee-overlays/
 endef
 
 $(eval $(generic-package))
