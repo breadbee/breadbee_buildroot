@@ -87,6 +87,9 @@ buildroot_config:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) menuconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) savedefconfig
 
+buildroot_linux_menuconfig:
+	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) linux-menuconfig
+
 buildroot_clean:
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
 

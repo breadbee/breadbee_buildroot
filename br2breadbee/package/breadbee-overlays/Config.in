@@ -35,6 +35,17 @@ config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_KERNEL_FRAGMENT
 	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb"
 endif
 
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_SD
+	bool "SD/SDIO support"
+	help
+	  SD/SDIO support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_SD
+config BR2_PACKAGE_BREADBEE_OVERLAYS_SD_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/sd"
+endif
+
 config  BR2_PACKAGE_BREADBEE_OVERLAYS_FPGA
 	bool "FPGA support"
 	help
