@@ -1,4 +1,5 @@
 //bbovly-category:pwm
+//bbovly-type:device
 
 /dts-v1/;
 /plugin/;

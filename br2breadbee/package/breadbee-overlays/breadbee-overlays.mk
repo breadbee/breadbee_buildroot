@@ -52,6 +52,7 @@ define BREADBEE_OVERLAYS_BUILD_CMDS
 		--dtc=$(HOST_DIR)/bin/dtc \
 		--overlays=$(@D)/dts/ \
 		--imggenoutputs=$(BINARIES_DIR)/breadbee-overlays/ \
+		--beecfg_outputs=$(@D)/usr/share/breadbee-overlays/ \
 		$(BREADBEE_OVERLAYS_CATEGORIES)
 endef
 

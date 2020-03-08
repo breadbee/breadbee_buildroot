@@ -1,4 +1,5 @@
 //bbovly-category:uart
+//bbovly-type:device
 
 /dts-v1/;
 /plugin/;

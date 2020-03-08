@@ -1,4 +1,5 @@
 //bbovly-category:i2c
+//bbovly-type:config
 
 /dts-v1/;
 /plugin/;

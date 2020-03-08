@@ -1,4 +1,7 @@
+//bbtmpl-names:sar0_gpio0,sar1_gpio1,sar2_gpio2,sar3_gpio3
+//bbtmpl-expansion:sar
 //bbovly-category:adc
+//bbovly-type:device
 
 /dts-v1/;
 /plugin/;
@@ -11,7 +14,7 @@
 		__overlay__ {
 			status = "okay";
 			pinctrl-names = "default";
-			pinctrl-0 = <&sar1_gpio1_pins>, <&sar2_gpio2_pins>;
+			pinctrl-0 = ${pinctrl};
 		};
 	};
 };

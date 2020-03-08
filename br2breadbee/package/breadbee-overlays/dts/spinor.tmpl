@@ -1,4 +1,8 @@
+//bbtmpl-names:on_spi0,on_spi1
+//bbtmpl-targets:mspi0,mspi1
+//bbtmpl-expansion:eitheror
 //bbovly-category:spi
+//bbovly-type:device
 
 /dts-v1/;
 /plugin/;
@@ -7,7 +11,7 @@
 	compatible = "thingyjp,thumbee";
 
 	fragment@0 {
-		target = <&mspi0>;
+		target = <&${target}>;
 		__overlay__ {
 			status = "okay";
 			spinor: spinor@0 {
