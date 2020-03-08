@@ -1,3 +1,5 @@
+//bbovly-category:fpga
+
 #include <dt-bindings/gpio/gpio.h>
 
 /dts-v1/;
