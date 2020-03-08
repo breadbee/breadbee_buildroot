@@ -8,7 +8,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 d = Dialog(dialog="dialog", autowidgetsize=True)
 
-d.setBackgroundTitle("BeeCfg for BreadBee")
+d.set_background_title("BeeCfg for BreadBee")
 
 MENU_PINMUX = "pinmux"
 MENU_INTERFACES = "interfaces"
