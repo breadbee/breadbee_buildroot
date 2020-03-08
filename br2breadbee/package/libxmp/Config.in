@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBXMP
+	bool "libxmp"
+	help
+	  libxmp

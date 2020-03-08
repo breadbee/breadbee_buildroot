@@ -8,6 +8,8 @@ source "$BR2_EXTERNAL_BREADBEE_PATH/package/python-tinyodrive/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/rwsetup/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/sandbox/Config.in"
 source "$BR2_EXTERNAL_BREADBEE_PATH/package/swankypython/Config.in"
+source "$BR2_EXTERNAL_BREADBEE_PATH/package/libxmp/Config.in"
+source "$BR2_EXTERNAL_BREADBEE_PATH/package/xmp/Config.in"
 
 config BR2_BREADBEE_MFGTOOLS
 	bool "install stuff for mfg"
