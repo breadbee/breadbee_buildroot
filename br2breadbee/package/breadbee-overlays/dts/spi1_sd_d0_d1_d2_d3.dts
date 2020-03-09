@@ -1,5 +1,6 @@
 //bbovly-category:spi
 //bbovly-type:interface
+//bbovly-consumes:j4_p2,j4_p3,j4_p4,j4_p5
 
 /dts-v1/;
 /plugin/;

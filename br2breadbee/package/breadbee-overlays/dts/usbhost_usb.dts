@@ -1,5 +1,6 @@
 //bbovly-category:usb
 //bbovly-type:device
+//bbovly-consumes:j4_p11,j4_p12
 
 /dts-v1/;
 /plugin/;

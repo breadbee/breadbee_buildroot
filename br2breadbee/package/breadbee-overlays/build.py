@@ -271,6 +271,8 @@ if __name__ == '__main__':
                     tokens[k] = tokens[k].split(",")
                 option[k] = tokens[k]
 
+            assert tokens.get("consumes") is not None
+
             options[category].append(option)
 
     resolve_provider_conflicts()

@@ -1,5 +1,6 @@
 //bbovly-category:pwm
 //bbovly-type:device
+//bbovly-consumes:j2_p17
 
 /dts-v1/;
 /plugin/;

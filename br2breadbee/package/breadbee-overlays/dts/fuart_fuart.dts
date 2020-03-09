@@ -1,5 +1,6 @@
 //bbovly-category:uart
 //bbovly-type:device
+//bbovly-consumes:j2_p15,j2_p16,j2_p17,j2_p18
 
 /dts-v1/;
 /plugin/;

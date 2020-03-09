@@ -1,5 +1,6 @@
 //bbovly-category:spi
 //bbovly-type:device
+//bbovly-consumes:spi0
 
 /dts-v1/;
 /plugin/;
