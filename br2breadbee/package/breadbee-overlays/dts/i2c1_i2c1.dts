@@ -1,5 +1,7 @@
 //bbovly-category:i2c
 //bbovly-type:interface
+//bbovly-consumes:j2_p5,j2_p6
+//bbovly-provides:i2c1
 
 /dts-v1/;
 /plugin/;
