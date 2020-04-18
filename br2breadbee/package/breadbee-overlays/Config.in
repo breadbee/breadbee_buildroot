@@ -101,6 +101,19 @@ if BR2_PACKAGE_BREADBEE_OVERLAYS_USB
 config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_KERNEL_FRAGMENT
 	string
 	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb"
+
+config  BR2_PACKAGE_BREADBEE_OVERLAYS_USB_AUDIO
+	bool "USB audio support"
+	select BR2_PACKAGE_XMP
+	help
+	  USB audio support
+
+if BR2_PACKAGE_BREADBEE_OVERLAYS_USB_AUDIO
+config BR2_PACKAGE_BREADBEE_OVERLAYS_USB_AUDIO_KERNEL_FRAGMENT
+	string
+	default "$(BR2_EXTERNAL_BREADBEE_PATH)/configs/kernel_fragments/usb_audio"
+
+endif
 endif
 
 # W1 support
