@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: debian/unstable:+
+      - image: debian/unstable:latest
     steps:
       - checkout
       - run:
