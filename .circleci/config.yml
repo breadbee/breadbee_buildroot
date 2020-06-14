@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: debian:latest
+    steps:
+      - checkout
+      - run:
+          command: apt-get -qq update
+      - run:
+          command: apt-get -qq install build-essential file wget cpio python unzip rsync bc git
+      - run:
+          command: make bootstrap
+      - run:
+          environment:
+            FORCE_UNSAFE_CONFIGURE: 1
+          command: make
+
+workflows:
+  weekly:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "12 00 * * 0"
+          filters:
+            branches:
+              only:
+                - master
