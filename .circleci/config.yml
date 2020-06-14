@@ -7,7 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
-          command: apt-get install build-essential
+          command: apt-get -qq update
+      - run:
+          command: apt-get -qq install build-essential file wget cpio python unzip rsync bc git
       - run:
           command: make
 
