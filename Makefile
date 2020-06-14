@@ -147,7 +147,7 @@ run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
 	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
 	@echo "Hit ctrl-c to stop."
-	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) -r ./outputs
+	@sudo ./buildroot/output/host/bin/ptftpd $(TFTP_INTERFACE) -r $(OUTPUTS)
 
 buildindocker:
 	docker build -t breadbee_buildroot .
