@@ -19,6 +19,8 @@ jobs:
 
 workflows:
   nightly:
+    jobs:
+      - build
     triggers:
       - schedule:
           cron: "12 00 * * 0"
