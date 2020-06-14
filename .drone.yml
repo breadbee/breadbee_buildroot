@@ -1,0 +1,67 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+
+- name: createimage
+  image: docker:latest
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+  commands:
+  - ls -l ./
+  - ls -l /var/run/
+  - docker build -t breadbee_buildroot .
+  - chmod -R o+rw ./
+
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  volumes:
+  - name: cache
+    path: /cache
+  settings:
+    restore: true
+    mount:
+      - ./dl
+
+- name: bootstrap
+  image: breadbee_buildroot
+  pull: if-not-exists
+  commands:
+  - make bootstrap
+
+- name: download
+  image: breadbee_buildroot
+  pull: if-not-exists
+  commands:
+  - make buildroot_dl
+
+- name: rebuild-cache
+  image: drillster/drone-volume-cache
+  volumes:
+  - name: cache
+    path: /cache
+  settings:
+    rebuild: true
+    mount:
+      - ./dl
+
+- name: buildroot
+  image: breadbee_buildroot
+  pull: if-not-exists
+  commands:
+  - make buildroot
+  environment:
+    FORCE_UNSAFE_CONFIGURE: 1
+
+volumes:
+  - name: cache
+    host: 
+      path: /tmp/cache
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+...

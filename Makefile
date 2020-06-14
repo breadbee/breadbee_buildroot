@@ -63,6 +63,7 @@ endef
 .PHONY: bootstrap \
 	buildindocker \
 	buildroot \
+	buildroot_dl \
 	buildroot_rescue \
 	run_tftpd \
 	linux_update \
@@ -103,6 +104,11 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot-spl.bin)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
+
+buildroot_dl: $(OUTPUTS) $(DLDIR)
+	$(call clean_localpkgs,$(BUILDROOT_PATH))
+	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
+	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) source
 
 buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
