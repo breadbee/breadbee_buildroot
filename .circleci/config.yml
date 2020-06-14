@@ -14,7 +14,7 @@ jobs:
           command: make bootstrap
       - run:
           environment:
-            FORCE_UNSAFE_CONFIGURE:1
+            FORCE_UNSAFE_CONFIGURE: 1
           command: make
 
 workflows:
