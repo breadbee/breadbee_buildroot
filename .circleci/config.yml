@@ -11,6 +11,8 @@ jobs:
       - run:
           command: apt-get -qq install build-essential file wget cpio python unzip rsync bc git
       - run:
+          command: make bootstrap
+      - run:
           command: make
 
 workflows:
