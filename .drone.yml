@@ -48,13 +48,17 @@ steps:
     mount:
       - ./dl
 
-- name: buildroot
+- name: main
   image: breadbee_buildroot
   pull: if-not-exists
   commands:
   - make buildroot
-  environment:
-    FORCE_UNSAFE_CONFIGURE: 1
+
+- name: rescue
+  image: breadbee_buildroot
+  pull: if-not-exists
+  commands:
+  - make buildroot_rescue
 
 volumes:
   - name: cache
