@@ -5,6 +5,16 @@ name: default
 
 steps:
 
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  volumes:
+  - name: cache
+    path: /cache
+  settings:
+    restore: true
+    mount:
+      - ./dl
+
 - name: createimage
   image: docker:latest
   volumes:
@@ -15,16 +25,6 @@ steps:
   - ls -l /var/run/
   - docker build -t breadbee_buildroot .
   - chmod -R o+rw ./
-
-- name: restore-cache
-  image: drillster/drone-volume-cache
-  volumes:
-  - name: cache
-    path: /cache
-  settings:
-    restore: true
-    mount:
-      - ./dl
 
 - name: bootstrap
   image: breadbee_buildroot
