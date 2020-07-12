@@ -18,7 +18,7 @@ PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
 
 UBOOT_BRANCH=mstar
 
-LINUX_BRANCH=msc313e_dev_v5_6_rebase
+LINUX_BRANCH=mstar_dev_v5_8_rebase_cleanup
 
 # try to guess the interface for tftp
 ifeq ($(TFTP_INTERFACE),)
