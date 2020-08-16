@@ -102,7 +102,7 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot-spl.bin)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 
 buildroot_dl: $(OUTPUTS) $(DLDIR)
