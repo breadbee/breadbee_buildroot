@@ -43,13 +43,13 @@ endef
 
 define update_git_package
 	@echo updating git package $(1)
-	git -C dl/$(1)/git clean -fd
-	git -C dl/$(1)/git fetch --force --all --tags
-	git -C dl/$(1)/git checkout master
-	- git -C dl/$(1)/git branch -D $(2)
-	git -C dl/$(1)/git checkout -b $(2)
-	git -C dl/$(1)/git reset --hard origin/$(2)
-	rm -f dl/$(1)/$(1)-$(2).tar.gz
+	git -C $(DLDIR)/$(1)/git clean -fd
+	git -C $(DLDIR)/$(1)/git fetch --force --all --tags
+	git -C $(DLDIR)/$(1)/git checkout master
+	- git -C $(DLDIR)/$(1)/git branch -D $(2)
+	git -C $(DLDIR)/$(1)/git checkout -b $(2)
+	git -C $(DLDIR)/$(1)/git reset --hard origin/$(2)
+	rm -f $(DLDIR)/$(1)/$(1)-$(2).tar.gz
 endef
 
 define clean_pkg
@@ -102,7 +102,7 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot-spl.bin)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 
 buildroot_dl: $(OUTPUTS) $(DLDIR)
