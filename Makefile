@@ -18,7 +18,7 @@ PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
 
 UBOOT_BRANCH=mstar
 
-LINUX_BRANCH=mstar_dev_v5_8_rebase_cleanup
+LINUX_BRANCH := $(shell cat br2breadbee/configs/breadbee_defconfig | grep BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION | cut -d "=" -f 2 | sed s/\"//g)
 
 # try to guess the interface for tftp
 ifeq ($(TFTP_INTERFACE),)

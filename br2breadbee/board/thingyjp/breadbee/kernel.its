@@ -21,7 +21,7 @@
 			};
 		};
 		fdt@0 {
-			data = /incbin/("../../images/infinity3-msc313e-breadbee.dtb");
+			data = /incbin/("../../images/mstar-infinity3-msc313e-breadbee.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
@@ -34,7 +34,7 @@
 			};
 		};
 		fdt@1 {
-			data = /incbin/("../../images/infinity-msc313-breadbee_crust.dtb");
+			data = /incbin/("../../images/mstar-infinity-msc313-breadbee_crust.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
@@ -47,7 +47,7 @@
 			};
 		};
 		fdt@2 {
-			data = /incbin/("../../images/infinity3-msc313e-wiibee.dtb");
+			data = /incbin/("../../images/mstar-infinity3-msc313e-wiibee.dtb");
 			type = "flat_dt";
 			arch = "arm";
 			compression = "none";
