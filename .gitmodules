@@ -16,3 +16,6 @@
 	path = br2sanetime
 	url = https://github.com/fifteenhex/br2sanetime.git
 
+[submodule "br2secretsauce"]
+	path = br2secretsauce
+	url = https://github.com/fifteenhex/br2secretsauce.git
