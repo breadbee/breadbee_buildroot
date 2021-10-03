@@ -51,7 +51,7 @@ endef
 	linux_rescue_clean \
 	uboot_update
 
-all: buildroot buildroot_rescue
+all: buildroot buildroot-rescue
 
 bootstrap.stamp:
 	git submodule init
@@ -76,17 +76,6 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
-
-ifeq ($(BRANCH), master)
-buildroot_rescue: $(OUTPUTS) $(DLDIR)
-	$(call clean_localpkgs,$(BUILDROOT_RESCUE_PATH))
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS)
-	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img,rescue.fit.img)
-else
-buildroot_rescue:
-	@echo "rescue is only built for master, your branch is $(BRANCH)"
-endif
 
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
