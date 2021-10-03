@@ -60,8 +60,7 @@ define copy_to_outputs
 	cp $(1) $(OUTPUTS)/$(addprefix $(BRANCH_PREFIX), $(if $(2),$(2),$(notdir $(1))))
 endef
 
-.PHONY: bootstrap \
-	buildindocker \
+.PHONY: buildindocker \
 	buildroot \
 	buildroot_dl \
 	buildroot_rescue \
@@ -73,9 +72,10 @@ endef
 
 all: buildroot buildroot_rescue
 
-bootstrap:
+bootstrap.stamp:
 	git submodule init
 	git submodule update
+	touch bootstrap.stamp
 
 $(DLDIR):
 	mkdir -p $(DLDIR)
