@@ -1,5 +1,6 @@
-OUTPUTS=$(PWD)/outputs
-DLDIR=$(PWD)/dl
+PREFIX=breadbee
+TOOLCHAIN=arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz
+EXTERNALS=../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps
 
 # main buildroot variables
 BUILDROOT_PATH=./buildroot
@@ -41,17 +42,6 @@ define clean_localpkgs
 	rm -rf $(foreach pkg,$(PKGS_APPS),$(wildcard $(1)/output/build/$(pkg)-*/))
 endef
 
-define update_git_package
-	@echo updating git package $(1)
-	git -C $(DLDIR)/$(1)/git clean -fd
-	git -C $(DLDIR)/$(1)/git fetch --force --all --tags
-	git -C $(DLDIR)/$(1)/git checkout master
-	- git -C $(DLDIR)/$(1)/git branch -D $(2)
-	git -C $(DLDIR)/$(1)/git checkout -b $(2)
-	git -C $(DLDIR)/$(1)/git reset --hard origin/$(2)
-	rm -f $(DLDIR)/$(1)/$(1)-$(2).tar.gz
-endef
-
 define clean_pkg
 	rm -rf $(1)/output/build/$(2)/
 endef
@@ -60,9 +50,9 @@ define copy_to_outputs
 	cp $(1) $(OUTPUTS)/$(addprefix $(BRANCH_PREFIX), $(if $(2),$(2),$(notdir $(1))))
 endef
 
-.PHONY: buildindocker \
+.PHONY: bootstrap \
+	buildindocker \
 	buildroot \
-	buildroot_dl \
 	buildroot_rescue \
 	run_tftpd \
 	linux_update \
@@ -77,22 +67,13 @@ bootstrap.stamp:
 	git submodule update
 	touch bootstrap.stamp
 
-$(DLDIR):
-	mkdir -p $(DLDIR)
+./br2secretsauce/common.mk: bootstrap.stamp
+./br2secretsauce/rescue.mk: bootstrap.stamp
 
-$(OUTPUTS):
-	mkdir -p $(OUTPUTS)
+bootstrap: bootstrap.stamp
 
-buildroot_config:
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) menuconfig
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) savedefconfig
-
-buildroot_linux_menuconfig:
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) linux-menuconfig
-
-buildroot_clean:
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) clean
+include ./br2secretsauce/common.mk
+include ./br2secretsauce/rescue.mk
 
 buildroot: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_PATH))
@@ -104,11 +85,6 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
-
-buildroot_dl: $(OUTPUTS) $(DLDIR)
-	$(call clean_localpkgs,$(BUILDROOT_PATH))
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) source
 
 buildroot_rescue_config:
 	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
