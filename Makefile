@@ -37,10 +37,6 @@ define clean_pkg
 	rm -rf $(1)/output/build/$(2)/
 endef
 
-define copy_to_outputs
-	cp $(1) $(OUTPUTS)/$(addprefix $(BRANCH_PREFIX), $(if $(2),$(2),$(notdir $(1))))
-endef
-
 .PHONY: bootstrap \
 	buildindocker \
 	buildroot \
@@ -51,7 +47,7 @@ endef
 	linux_rescue_clean \
 	uboot_update
 
-all: buildroot buildroot-rescue
+all: buildroot-dl buildroot buildroot-rescue copy-outputs
 
 bootstrap.stamp:
 	git submodule init
@@ -70,12 +66,6 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_PATH))
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
 	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/nor-16.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
@@ -106,3 +96,14 @@ run_tftpd:
 buildindocker:
 	docker build -t breadbee_buildroot .
 	docker run -v $(shell pwd):/breadbee_buildroot -t breadbee_buildroot sh -c "cd /breadbee_buildroot && make"
+
+BUILDROOT_RESCUE_PATH=./buildroot_rescue
+
+copy-outputs:
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/nor-16.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
+	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img,rescue.fit.img)
