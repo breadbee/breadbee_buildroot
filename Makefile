@@ -1,18 +1,14 @@
 PREFIX=breadbee
 TOOLCHAIN=arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz
 EXTERNALS=../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps
+DEFCONFIG=../br2breadbee/configs/breadbee_defconfig
+DEFCONFIG_RESCUE=../br2breadbee/configs/breadbee_rescue_defconfig
 
 # main buildroot variables
 BUILDROOT_PATH=./buildroot
 BUILDROOT_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_defconfig \
 	BR2_DL_DIR=$(DLDIR) \
 	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee ../br2apps"
-
-# rescue buildroot variables
-BUILDROOT_RESCUE_PATH=./buildroot_rescue
-BUILDROOT_RESCUE_ARGS=BR2_DEFCONFIG=../br2breadbee/configs/breadbee_rescue_defconfig \
-	BR2_DL_DIR=$(DLDIR) \
-	BR2_EXTERNAL="../br2autosshkey ../br2sanetime ../br2breadbee"
 
 PKGS_BB=$(foreach dir,$(wildcard br2breadbee/package/*/),$(shell basename $(dir)))
 PKGS_APPS=$(foreach dir,$(wildcard br2apps/package/*/),$(shell basename $(dir)))
@@ -26,11 +22,6 @@ ifeq ($(TFTP_INTERFACE),)
 	TFTP_INTERFACE=$(shell ip addr | grep BROADCAST | grep -v "docker" | head -n 1 | cut -d ":" -f 2 | tr -d '[:space:]')
 endif
 IP_ADDR=$(shell ip addr | grep -A 2 $(TFTP_INTERFACE) | grep -Po '(?<=inet )([1-9]{1,3}\.){3}[1-9]{1,3}')
-
-BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
-ifneq ($(BRANCH), master)
-	BRANCH_PREFIX=$(BRANCH)-
-endif
 
 # this is crappy hack to get around the fact that buildroot doesn't
 # really support developing in buildroot. By deleting our local stuff
@@ -86,11 +77,6 @@ buildroot: $(OUTPUTS) $(DLDIR)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 
-buildroot_rescue_config:
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) defconfig
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) menuconfig
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) savedefconfig
-
 ifeq ($(BRANCH), master)
 buildroot_rescue: $(OUTPUTS) $(DLDIR)
 	$(call clean_localpkgs,$(BUILDROOT_RESCUE_PATH))
@@ -101,10 +87,6 @@ else
 buildroot_rescue:
 	@echo "rescue is only built for master, your branch is $(BRANCH)"
 endif
-
-
-buildroot_rescue_clean:
-	$(MAKE) -C $(BUILDROOT_RESCUE_PATH) $(BUILDROOT_RESCUE_ARGS) clean
 
 clean: buildroot_clean buildroot_rescue_clean
 	rm -rf $(OUTPUTS)
