@@ -60,6 +60,12 @@ steps:
   commands:
   - make buildroot_rescue
 
+- name: upload
+  image: breadbee_buildroot
+  pull: if-not-exists
+  commands:
+  - make upload
+
 volumes:
   - name: cache
     host: 

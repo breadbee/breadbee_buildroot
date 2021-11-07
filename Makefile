@@ -80,12 +80,6 @@ uboot_clean:
 linux_update: linux_clean linux_rescue_clean
 	$(call update_git_package,linux,$(LINUX_BRANCH))
 
-linux_clean:
-	$(call clean_pkg,$(BUILDROOT_PATH),linux-$(LINUX_BRANCH))
-
-linux_rescue_clean:
-	$(call clean_pkg, $(BUILDROOT_RESCUE_PATH),linux-$(LINUX_BRANCH))
-
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
 	@echo "Run \"setenv serverip $(IP_ADDR)\" in u-boot before running any tftp commands."
@@ -101,9 +95,12 @@ BUILDROOT_RESCUE_PATH=./buildroot_rescue
 
 copy-outputs:
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/nor-16.img)
-	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit.img)
+	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/kernel.fit)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.bin)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
-	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit.img,rescue.fit.img)
+	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit,rescue.fit)
+
+upload:
+        $(call upload_to_tftp_with_scp,$(BUILDROOT_PATH)/output/images/$(BUILDROOT_PATH)/output/images/kernel.fit)
