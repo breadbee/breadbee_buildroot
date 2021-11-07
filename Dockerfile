@@ -11,6 +11,5 @@ RUN apt-get -qq update && \
 			rsync \
 			bc \
 			git \
-			libyaml-dev \
 			linux-headers-amd64
 USER builder
