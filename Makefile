@@ -47,7 +47,7 @@ endef
 	linux_rescue_clean \
 	uboot_update
 
-all: buildroot-dl buildroot buildroot-rescue copy-outputs
+all: buildroot buildroot-rescue copy-outputs
 
 bootstrap.stamp:
 	git submodule init
@@ -62,23 +62,16 @@ bootstrap: bootstrap.stamp
 include ./br2secretsauce/common.mk
 include ./br2secretsauce/rescue.mk
 
-buildroot: $(OUTPUTS) $(DLDIR)
-	$(call clean_localpkgs,$(BUILDROOT_PATH))
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
-	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
+#buildroot: $(OUTPUTS) $(DLDIR)
+#	$(call clean_localpkgs,$(BUILDROOT_PATH))
+#	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS) defconfig
+#	$(MAKE) -C $(BUILDROOT_PATH) $(BUILDROOT_ARGS)
 
-clean: buildroot_clean buildroot_rescue_clean
+clean: buildroot-clean buildroot-rescue-clean
 	rm -rf $(OUTPUTS)
-
-uboot_update:
-	$(call update_git_package,uboot,$(UBOOT_BRANCH))
-	$(call clean_pkg,$(BUILDROOT_PATH),uboot-$(UBOOT_BRANCH))
 
 uboot_clean:
 	$(call clean_pkg,$(BUILDROOT_PATH),uboot-msc313)
-
-linux_update: linux_clean linux_rescue_clean
-	$(call update_git_package,linux,$(LINUX_BRANCH))
 
 run_tftpd:
 	@echo "Running TFTP on $(TFTP_INTERFACE), ip is $(IP_ADDR)."
