@@ -5,7 +5,7 @@
 	#address-cells = <1>;
 
 	images {
-		kernel@0 {
+		kernel-0 {
 			data = /incbin/("../../images/zImage");
 			type = "kernel";
 			arch = "arm";
@@ -20,7 +20,7 @@
 				algo = "sha1";
 			};
 		};
-		fdt@0 {
+		fdt-0 {
 			data = /incbin/("../../images/mstar-infinity3-msc313e-breadbee.dtb");
 			type = "flat_dt";
 			arch = "arm";
@@ -33,7 +33,7 @@
 				algo = "sha1";
 			};
 		};
-		fdt@1 {
+		fdt-1 {
 			data = /incbin/("../../images/mstar-infinity-msc313-breadbee_crust.dtb");
 			type = "flat_dt";
 			arch = "arm";
@@ -46,7 +46,7 @@
 				algo = "sha1";
 			};
 		};
-		fdt@2 {
+		fdt-2 {
 			data = /incbin/("../../images/mstar-infinity3-msc313e-wiibee.dtb");
 			type = "flat_dt";
 			arch = "arm";
@@ -65,16 +65,16 @@
 	configurations {
 		default = "breadbee";
 		breadbee {
-			kernel = "kernel@0";
-			fdt = "fdt@0";
+			kernel = "kernel-0";
+			fdt = "fdt-0";
 		};
 		breadbee_crust {
-			kernel = "kernel@0";
-			fdt = "fdt@1";
+			kernel = "kernel-0";
+			fdt = "fdt-1";
 		};
 		wiibee {
-			kernel = "kernel@0";
-			fdt = "fdt@2";
+			kernel = "kernel-0";
+			fdt = "fdt-2";
 		};
 		/include/ "../../images/breadbee-overlays/configlist"
 	};

@@ -89,9 +89,10 @@ copy-outputs:
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/u-boot.img)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/ipl)
 	$(call copy_to_outputs,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
-	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel.fit,rescue.fit)
+	$(call copy_to_outputs,$(BUILDROOT_RESCUE_PATH)/output/images/kernel-rescue.fit)
 
 upload:
 	$(call upload_to_tftp_with_scp,$(BUILDROOT_PATH)/output/images/kernel.fit)
 	$(call upload_to_tftp_with_scp,$(BUILDROOT_PATH)/output/images/rootfs.squashfs)
 	$(call upload_to_tftp_with_scp,$(BUILDROOT_PATH)/output/images/nor-16.img)
+	$(call upload_to_tftp_with_scp,$(BUILDROOT_RESCUE_PATH)/output/images/kernel-rescue.fit)
