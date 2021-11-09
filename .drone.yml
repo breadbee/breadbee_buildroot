@@ -68,7 +68,7 @@ steps:
   image: breadbee_buildroot
   pull: if-not-exists
   commands:
-  - make buildroot_rescue
+  - make buildroot-rescue
 
 - name: upload
   image: breadbee_buildroot
